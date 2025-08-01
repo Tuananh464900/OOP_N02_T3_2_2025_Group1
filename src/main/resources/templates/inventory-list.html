@@ -1,0 +1,43 @@
+<!-- templates/inventory-list.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Giao dịch Nhập/Xuất</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<div class="container mt-5">
+    <h2 class="mb-4"><span class="badge bg-warning text-dark">🔁</span> Giao dịch Nhập/Xuất</h2>
+    <a th:href="@{/inventorytransactions/create}" class="btn btn-success mb-3">+ Thêm giao dịch</a>
+
+    <table class="table table-bordered table-hover">
+        <thead class="table-secondary">
+            <tr>
+                <th>ID</th>
+                <th>Sản phẩm</th>
+                <th>Kho</th>
+                <th>Số lượng</th>
+                <th>Loại</th>
+                <th>Thời gian</th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="t : ${transactions}">
+                <td th:text="${t.id}"></td>
+                <td th:text="${t.product.name}"></td>
+                <td th:text="${t.warehouse.name}"></td>
+                <td th:text="${t.quantity}"></td>
+                <td th:text="${t.type}"></td>
+                <td th:text="${#dates.format(t.timestamp, 'dd-MM-yyyy HH:mm')}"></td>
+                <td>
+                    <a th:href="@{'/inventorytransactions/edit/' + ${t.id}}" class="btn btn-warning btn-sm">Sửa</a>
+                    <a th:href="@{'/inventorytransactions/delete/' + ${t.id}}" class="btn btn-danger btn-sm">Xóa</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

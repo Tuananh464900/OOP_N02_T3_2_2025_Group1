@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Danh sách giao dịch</title>
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand ms-3" th:href="@{/}">Warehouse App</a>
+  </nav>
+
+  <div class="container mt-4">
+    <div class="mb-3">
+      <a class="btn btn-outline-primary" th:href="@{/}">← Trang chủ</a>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h2>Danh sách giao dịch</h2>
+      <a class="btn btn-primary" th:href="@{/inventory/create}">Thêm mới</a>
+    </div>
+
+    <table class="table table-striped table-bordered align-middle">
+      <thead class="table-light">
+        <tr>
+          <th>ID</th>
+          <th>Sản phẩm</th>
+          <th>Kho</th>
+          <th>Số lượng</th>
+          <th>Loại</th>
+          <th>Thao tác</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="tx : ${transactions}">
+          <td th:text="${tx.id}"></td>
+          <td th:text="${tx.product.name}"></td>
+          <td th:text="${tx.warehouse.name}"></td>
+          <td th:text="${tx.quantity}"></td>
+          <td th:text="${tx.type}"></td>
+          <td>
+            <a class="btn btn-warning btn-sm me-1"
+               th:href="@{/inventory/edit/{id}(id=${tx.id})}">Sửa</a>
+            <a class="btn btn-danger btn-sm"
+               th:href="@{/inventory/delete/{id}(id=${tx.id})}"
+               onclick="return confirm('Xóa giao dịch?')">Xóa</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js">
+  </script>
+</body>
+</html>

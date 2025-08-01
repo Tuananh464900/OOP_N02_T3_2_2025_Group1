@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Tạo/Sửa giao dịch</title>
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+</head>
+<body>
+  <!-- Navbar chung -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" th:href="@{/}">Warehouse App</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+              data-bs-target="#navbarNav" aria-controls="navbarNav"
+              aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item"><a class="nav-link" th:href="@{/products}">Sản phẩm</a></li>
+          <li class="nav-item"><a class="nav-link" th:href="@{/warehouses}">Kho hàng</a></li>
+          <li class="nav-item"><a class="nav-link" th:href="@{/inventory}">Giao dịch</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-4">
+    <!-- ← Trang chủ -->
+    <div class="mb-3">
+      <a class="btn btn-outline-primary" th:href="@{/}">← Trang chủ</a>
+    </div>
+
+    <h1 class="mb-4">Tạo / Sửa giao dịch</h1>
+
+    <form th:action="@{/inventory/save}" th:object="${transaction}" method="post">
+      <input type="hidden" th:field="*{id}" />
+
+      <div class="mb-3">
+        <label class="form-label">Sản phẩm:</label>
+        <select class="form-select" th:field="*{product.id}">
+          <option th:each="p : ${products}"
+                  th:value="${p.id}"
+                  th:text="${p.name}">
+          </option>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Kho:</label>
+        <select class="form-select" th:field="*{warehouse.id}">
+          <option th:each="w : ${warehouses}"
+                  th:value="${w.id}"
+                  th:text="${w.name}">
+          </option>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Số lượng:</label>
+        <input type="number" class="form-control" th:field="*{quantity}" />
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Loại giao dịch:</label>
+        <select class="form-select" th:field="*{type}">
+          <option value="IN">Nhập</option>
+          <option value="OUT">Xuất</option>
+        </select>
+      </div>
+
+      <button type="submit" class="btn btn-success">Lưu</button>
+      <a th:href="@{/inventory}" class="btn btn-secondary ms-2">Hủy</a>
+    </form>
+  </div>
+
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js">
+  </script>
+</body>
+</html>

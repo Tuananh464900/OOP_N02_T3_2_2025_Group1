@@ -22,14 +22,14 @@ public class ProductViewController {
     }
 
     // 2. Form tạo mới sản phẩm
-    @GetMapping("/create")
+    @GetMapping("/new") // Đã chỉnh lại cho khớp với product-list.html
     public String showCreateForm(Model model) {
         model.addAttribute("product", new Product());
         return "product-form";
     }
 
     // 3. Xử lý lưu (tạo hoặc cập nhật)
-    @PostMapping("/save")
+    @PostMapping // Đã chỉnh lại cho khớp với form action
     public String saveProduct(@ModelAttribute("product") Product product) {
         productService.createProduct(product);
         return "redirect:/products";

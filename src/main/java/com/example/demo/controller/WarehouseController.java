@@ -9,8 +9,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/warehouses")
-@CrossOrigin
 public class WarehouseController {
+
     @Autowired
     private WarehouseService warehouseService;
 
@@ -19,19 +19,14 @@ public class WarehouseController {
         return warehouseService.getAllWarehouses();
     }
 
-    @GetMapping("/{id}")
-    public Warehouse getWarehouseById(@PathVariable Long id) {
-        return warehouseService.getWarehouseById(id);
-    }
-
     @PostMapping
     public Warehouse createWarehouse(@RequestBody Warehouse warehouse) {
         return warehouseService.createWarehouse(warehouse);
     }
 
-    @PutMapping("/{id}")
-    public Warehouse updateWarehouse(@PathVariable Long id, @RequestBody Warehouse warehouse) {
-        return warehouseService.updateWarehouse(id, warehouse);
+    @GetMapping("/{id}")
+    public Warehouse getWarehouseById(@PathVariable Long id) {
+        return warehouseService.getWarehouseById(id);
     }
 
     @DeleteMapping("/{id}")

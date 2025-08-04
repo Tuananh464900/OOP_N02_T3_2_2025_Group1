@@ -2,39 +2,57 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Warehouse Management System</title>
+    <title>Ứng dụng Quản lý Kho</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            padding: 30px;
-            background-color: #f4f4f4;
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #fff;
+            text-align: center;
+            padding: 40px;
         }
         h1 {
-            color: #333;
+            font-size: 32px;
+            color: #222;
+        }
+        .success-icon {
+            font-size: 32px;
+            color: green;
         }
         .menu {
-            margin-top: 20px;
+            margin-top: 30px;
         }
         .menu a {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #3498db;
+            display: block;
+            margin: 10px auto;
+            width: 300px;
+            padding: 15px;
+            font-size: 18px;
+            font-weight: bold;
             color: white;
             text-decoration: none;
-            border-radius: 5px;
-            margin-right: 10px;
+            border-radius: 10px;
         }
-        .menu a:hover {
-            background-color: #2980b9;
-        }
+        .menu a.product { background-color: #007bff; }
+        .menu a.warehouse { background-color: #28a745; }
+        .menu a.transaction { background-color: #ffc107; color: black; }
     </style>
 </head>
 <body>
-    <h1>🏠 Welcome to Warehouse Management System</h1>
+
+    <div class="success-icon">✅</div>
+    <h1>Ứng dụng Quản lý Kho</h1>
+    <p>Chào mừng bạn đến với hệ thống quản lý kho đơn giản dùng Spring Boot & Thymeleaf.</p>
+
+    <hr style="width:60%; margin: 30px auto;">
+
+    <h3>▶ Truy cập các chức năng:</h3>
     <div class="menu">
-        <a href="/products">📦 Products</a>
-        <a href="/warehouses">🏬 Warehouses</a>
-        <a href="/inventory">📑 Inventory Transactions</a>
+        <a class="product" th:href="@{/products}">📦 Quản lý Sản phẩm</a>
+        <a class="warehouse" th:href="@{/warehouses}">🏠 Quản lý Kho</a>
+        <a class="transaction" th:href="@{/transactions}">🔁 Giao dịch Nhập/Xuất</a>
     </div>
+
+    <p style="margin-top: 30px; color: #888;">(Bạn có thể thêm các liên kết điều hướng tại đây sau này)</p>
+
 </body>
 </html>

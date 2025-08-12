@@ -1,43 +1,100 @@
+
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8"/>
-  <title>Danh sách kho hàng</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title th:text="${title} ?: 'Warehouse App'">Warehouse App</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .kpi-card{border-radius:14px}
+    .kpi-dot{width:18px;height:18px;border-radius:50%}
+    .card-soft{border:1px solid rgba(0,0,0,.05); box-shadow:0 4px 18px rgba(0,0,0,.06); border-radius:16px}
+  </style>
 </head>
-<body>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand ms-3" th:href="@{/}">Warehouse App</a>
-  </nav>
+<body class="bg-light">
 
-  <div class="container mt-4">
-    <h2>Danh sách kho hàng</h2>
-    <a class="btn btn-primary mb-3" th:href="@{/warehouses/create}">Thêm mới</a>
-    <table class="table table-striped table-bordered align-middle">
-      <thead class="table-light">
-        <tr>
-          <th>Hành động</th>
-          <th>ID</th>
-          <th>Tên kho</th>
-          <th>Vị trí</th>
-        </tr>
-      </thead>
+<div class="d-flex">
+  <aside class="flex-shrink-0 p-3 text-white" style="width: 260px; min-height:100vh; background: linear-gradient(180deg,#0f172a,#0b1223 60%,#0a1121);">
+    <a href="/dashboard" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+      <span class="fs-5">🏬 Quản lý Kho</span>
+    </a>
+    <hr>
+    <ul class="nav nav-pills flex-column mb-auto gap-1">
+      <li class="nav-item"><a href="/dashboard" class="nav-link text-white bg-primary-subtle fw-semibold">📊 Tổng quan</a></li>
+      <li><a href="/products" class="nav-link text-white">📦 Sản phẩm</a></li>
+      <li><a href="/warehouses" class="nav-link text-white">🏠 Kho</a></li>
+      <li><a href="/inventorytransactions" class="nav-link text-white">📚 Tồn kho</a></li>
+      <li><a href="/inventorytransactions/create?transactionType=RECEIPT" class="nav-link text-white">⬇️ Nhập kho</a></li>
+      <li><a href="/inventorytransactions/create?transactionType=ISSUE" class="nav-link text-white">⬆️ Xuất kho</a></li>
+      <li><a href="#" class="nav-link text-white">📈 Báo cáo</a></li>
+      <li><a href="#" class="nav-link text-white">👤 Người dùng</a></li>
+    </ul>
+    <hr>
+    <div class="small text-secondary">v1.0 • Spring Boot</div>
+  </aside>
+  <main class="flex-grow-1 p-4">
+<h4 class='mb-3'>Kho</h4>\n
+<div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
+  <span th:text="${success}"></span>
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+<div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+  <span th:text="${error}"></span>
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+
+
+<h3 class="mb-3">Danh sách kho</h3>
+<form class="row g-2 mb-3">
+  <div class="col-auto">
+    <select class="form-select" name="field">
+      <option th:selected="${field} == null" value="name">Tên</option>
+      <option th:selected="${field} == 'code'" value="code">Mã</option>
+    </select>
+  </div>
+  <div class="col-auto"><input class="form-control" type="search" name="q" placeholder="Tìm kiếm" th:value="${q}"></div>
+  <div class="col-auto"><button class="btn btn-outline-primary" type="submit">Tìm</button></div>
+  <div class="col-auto"><a class="btn btn-success" th:href="@{/warehouses/create}">+ Thêm</a></div>
+</form>
+
+<div class="card shadow-sm">
+  <div class="table-responsive">
+    <table class="table table-striped mb-0">
+      <thead><tr><th>ID</th><th>Mã</th><th>Tên</th><th>Vị trí</th><th></th></tr></thead>
       <tbody>
-        <tr th:each="wh : ${warehouses}">
-          <td>
-            <a class="btn btn-warning btn-sm me-1"
-               th:href="@{/warehouses/edit/{id}(id=${wh.id})}">Sửa</a>
-            <a class="btn btn-danger btn-sm"
-               th:href="@{/warehouses/delete/{id}(id=${wh.id})}" onclick="return confirm('Xóa kho?')">Xóa</a>
-          </td>
-          <td th:text="${wh.id}"></td>
-          <td th:text="${wh.name}"></td>
-          <td th:text="${wh.location}"></td>
-        </tr>
+      <tr th:each="w : ${page.content}">
+        <td th:text="${w.id}"></td>
+        <td th:text="${w.code}"></td>
+        <td th:text="${w.name}"></td>
+        <td th:text="${w.location}"></td>
+        <td class="text-end">
+          <a class="btn btn-sm btn-primary" th:href="@{'/warehouses/edit/' + ${w.id}}">Sửa</a>
+          <form th:action="@{'/warehouses/delete/' + ${w.id}}" method="post" th:id="${'wdel'+w.id}" class="d-inline">
+            <button type="button" class="btn btn-sm btn-danger" th:onclick="${'confirmDelete(\'wdel' + w.id + '\')'}">Xóa</button>
+          </form>
+        </td>
+      </tr>
       </tbody>
     </table>
   </div>
+</div>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<nav class="mt-3">
+  <ul class="pagination">
+    <li class="page-item" th:classappend="${page.first} ? 'disabled'">
+      <a class="page-link" th:href="@{|/warehouses?page=${page.number-1}&size=${page.size}&q=${q}&field=${field}|}">«</a>
+    </li>
+    <li class="page-item disabled"><span class="page-link" th:text="${page.number+1} + ' / ' + ${page.totalPages}"></span></li>
+    <li class="page-item" th:classappend="${page.last} ? 'disabled'">
+      <a class="page-link" th:href="@{|/warehouses?page=${page.number+1}&size=${page.size}&q=${q}&field=${field}|}">»</a>
+    </li>
+  </ul>
+</nav>
+
+
+  </main>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

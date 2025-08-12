@@ -1,27 +1,20 @@
 package com.example.demo.repository;
 
 import com.example.demo.model.InventoryTransaction;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
+
+import java.time.LocalDate;
+import java.util.List;
 
 public interface InventoryTransactionRepository extends JpaRepository<InventoryTransaction, Long> {
-
-    /**
-     * Tổng số lượng của tất cả giao dịch có type (ví dụ "IN" hoặc "OUT")
-     */
-    @Query("SELECT COALESCE(SUM(tx.quantity), 0) "
-         + "FROM InventoryTransaction tx "
-         + "WHERE tx.type = :type")
-    Long sumQuantityByType(@Param("type") String type);
-
-    /**
-     * Tổng số lượng của giao dịch theo type và theo 1 sản phẩm cụ thể
-     */
-    @Query("SELECT COALESCE(SUM(tx.quantity), 0) "
-         + "FROM InventoryTransaction tx "
-         + "WHERE tx.type = :type "
-         + "  AND tx.product.id = :pid")
-    Long sumQuantityByTypeAndProduct(@Param("type") String type,
-                                     @Param("pid") Long productId);
+    long countByTransactionTypeIgnoreCaseAndTransactionDate(String type, LocalDate date);
+    List<InventoryTransaction> findTop5ByOrderByTransactionDateDescIdDesc();
+    Page<InventoryTransaction> findAll(Pageable pageable);
+    Page<InventoryTransaction> findByTransactionTypeIgnoreCase(String type, Pageable pageable);
+    Page<InventoryTransaction> findByWarehouse_Id(Long warehouseId, Pageable pageable);
+    Page<InventoryTransaction> findByProductNameContainingIgnoreCase(String name, Pageable pageable);
+    Page<InventoryTransaction> findByTransactionDateBetween(LocalDate start, LocalDate end, Pageable pageable);
+    Page<InventoryTransaction> findByTransactionTypeIgnoreCaseAndWarehouse_IdAndTransactionDateBetween(String type, Long warehouseId, LocalDate start, LocalDate end, Pageable pageable);
 }

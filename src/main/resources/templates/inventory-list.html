@@ -1,43 +1,124 @@
-<!-- templates/inventory-list.html -->
+
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Giao dịch Nhập/Xuất</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title th:text="${title} ?: 'Warehouse App'">Warehouse App</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .kpi-card{border-radius:14px}
+    .kpi-dot{width:18px;height:18px;border-radius:50%}
+    .card-soft{border:1px solid rgba(0,0,0,.05); box-shadow:0 4px 18px rgba(0,0,0,.06); border-radius:16px}
+  </style>
 </head>
 <body class="bg-light">
-<div class="container mt-5">
-    <h2 class="mb-4"><span class="badge bg-warning text-dark">🔁</span> Giao dịch Nhập/Xuất</h2>
-    <a th:href="@{/inventorytransactions/create}" class="btn btn-success mb-3">+ Thêm giao dịch</a>
 
-    <table class="table table-bordered table-hover">
-        <thead class="table-secondary">
-            <tr>
-                <th>ID</th>
-                <th>Sản phẩm</th>
-                <th>Kho</th>
-                <th>Số lượng</th>
-                <th>Loại</th>
-                <th>Thời gian</th>
-                <th>Hành động</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="t : ${transactions}">
-                <td th:text="${t.id}"></td>
-                <td th:text="${t.product.name}"></td>
-                <td th:text="${t.warehouse.name}"></td>
-                <td th:text="${t.quantity}"></td>
-                <td th:text="${t.type}"></td>
-                <td th:text="${#dates.format(t.timestamp, 'dd-MM-yyyy HH:mm')}"></td>
-                <td>
-                    <a th:href="@{'/inventorytransactions/edit/' + ${t.id}}" class="btn btn-warning btn-sm">Sửa</a>
-                    <a th:href="@{'/inventorytransactions/delete/' + ${t.id}}" class="btn btn-danger btn-sm">Xóa</a>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+<div class="d-flex">
+  <aside class="flex-shrink-0 p-3 text-white" style="width: 260px; min-height:100vh; background: linear-gradient(180deg,#0f172a,#0b1223 60%,#0a1121);">
+    <a href="/dashboard" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+      <span class="fs-5">🏬 Quản lý Kho</span>
+    </a>
+    <hr>
+    <ul class="nav nav-pills flex-column mb-auto gap-1">
+      <li class="nav-item"><a href="/dashboard" class="nav-link text-white bg-primary-subtle fw-semibold">📊 Tổng quan</a></li>
+      <li><a href="/products" class="nav-link text-white">📦 Sản phẩm</a></li>
+      <li><a href="/warehouses" class="nav-link text-white">🏠 Kho</a></li>
+      <li><a href="/inventorytransactions" class="nav-link text-white">📚 Tồn kho</a></li>
+      <li><a href="/inventorytransactions/create?transactionType=RECEIPT" class="nav-link text-white">⬇️ Nhập kho</a></li>
+      <li><a href="/inventorytransactions/create?transactionType=ISSUE" class="nav-link text-white">⬆️ Xuất kho</a></li>
+      <li><a href="#" class="nav-link text-white">📈 Báo cáo</a></li>
+      <li><a href="#" class="nav-link text-white">👤 Người dùng</a></li>
+    </ul>
+    <hr>
+    <div class="small text-secondary">v1.0 • Spring Boot</div>
+  </aside>
+  <main class="flex-grow-1 p-4">
+<h4 class='mb-3'>Giao dịch kho</h4>\n
+<div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
+  <span th:text="${success}"></span>
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
+<div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+  <span th:text="${error}"></span>
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+
+
+<h3 class="mb-3">Giao dịch kho</h3>
+<form class="row g-2 mb-3">
+  <div class="col-auto">
+    <select class="form-select" name="type">
+      <option th:selected="${type} == null or ${type} == ''" value="">Tất cả loại</option>
+      <option value="RECEIPT" th:selected="${type}=='RECEIPT'">Nhập</option>
+      <option value="ISSUE" th:selected="${type}=='ISSUE'">Xuất</option>
+    </select>
+  </div>
+  <div class="col-auto">
+    <select class="form-select" name="warehouseId">
+      <option value="" th:selected="${warehouseId}==null">Tất cả kho</option>
+      <option th:each="w : ${warehouses}" th:value="${w.id}" th:text="${w.name}" th:selected="${warehouseId}==${w.id}"></option>
+    </select>
+  </div>
+  <div class="col-auto">
+    <input class="form-control" type="search" name="productName" placeholder="Tên sản phẩm" th:value="${productName}">
+  </div>
+  <div class="col-auto">
+    <input class="form-control" type="date" name="startDate" th:value="${startDate}">
+  </div>
+  <div class="col-auto">
+    <input class="form-control" type="date" name="endDate" th:value="${endDate}">
+  </div>
+  <div class="col-auto">
+    <button class="btn btn-outline-primary" type="submit">Lọc</button>
+  </div>
+  <div class="col-auto ms-auto">
+    <a class="btn btn-success" th:href="@{/inventorytransactions/create}">+ Tạo giao dịch</a>
+  </div>
+</form>
+<div class="mb-3">
+  <a class="btn btn-success" th:href="@{/inventorytransactions/create}">+ Tạo giao dịch</a>
+</div>
+<div class="card shadow-sm">
+  <div class="table-responsive">
+    <table class="table table-striped mb-0">
+      <thead><tr><th>ID</th><th>Loại</th><th>Sản phẩm</th><th>Số lượng</th><th>Ngày</th><th>Kho</th><th>Ghi chú</th><th></th></tr></thead>
+      <tbody>
+      <tr th:each="t : ${page.content}">
+        <td th:text="${t.id}"></td>
+        <td th:text="${t.transactionType}"></td>
+        <td th:text="${t.productName}"></td>
+        <td th:text="${t.quantity}"></td>
+        <td th:text="${t.transactionDate}"></td>
+        <td th:text="${t.warehouse != null ? t.warehouse.name : ''}"></td>
+        <td th:text="${t.notes}"></td>
+        <td class="text-end">
+          <a class="btn btn-sm btn-primary" th:href="@{'/inventorytransactions/edit/' + ${t.id}}">Sửa</a>
+          <form th:action="@{'/inventorytransactions/delete/' + ${t.id}}" method="post" th:id="${'tdel'+t.id}" class="d-inline">
+            <button type="button" class="btn btn-sm btn-danger" th:onclick="${'confirmDelete(\'tdel' + t.id + '\')'}">Xóa</button>
+          </form>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<nav class="mt-3">
+  <ul class="pagination">
+    <li class="page-item" th:classappend="${page.first} ? 'disabled'">
+      <a class="page-link" th:href="@{|/inventorytransactions?page=${page.number-1}&size=${page.size}|}">«</a>
+    </li>
+    <li class="page-item disabled"><span class="page-link" th:text="${page.number+1} + ' / ' + ${page.totalPages}"></span></li>
+    <li class="page-item" th:classappend="${page.last} ? 'disabled'">
+      <a class="page-link" th:href="@{|/inventorytransactions?page=${page.number+1}&size=${page.size}|}">»</a>
+    </li>
+  </ul>
+</nav>
+
+
+  </main>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -2,10 +2,16 @@ package com.example.demo.controller;
 
 import com.example.demo.model.Product;
 import com.example.demo.service.ProductService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/products")
@@ -14,39 +20,56 @@ public class ProductViewController {
     @Autowired
     private ProductService productService;
 
-    // 1. Hiển thị danh sách sản phẩm
     @GetMapping
-    public String listProducts(Model model) {
-        model.addAttribute("products", productService.getAllProducts());
+    public String list(@RequestParam(defaultValue = "0") int page,
+                       @RequestParam(defaultValue = "10") int size,
+                       @RequestParam(required = false) String q,
+                       Model model) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Product> data = (q == null || q.isBlank())
+                ? productService.findAll(pageable)
+                : productService.findByName(q, pageable);
+        model.addAttribute("page", data);
+        model.addAttribute("q", q);
         return "product-list";
     }
 
-    // 2. Form tạo mới sản phẩm
-    @GetMapping("/new") // Đã chỉnh lại cho khớp với product-list.html
-    public String showCreateForm(Model model) {
+    @GetMapping("/create")
+    public String createForm(Model model) {
         model.addAttribute("product", new Product());
         return "product-form";
     }
 
-    // 3. Xử lý lưu (tạo hoặc cập nhật)
-    @PostMapping // Đã chỉnh lại cho khớp với form action
-    public String saveProduct(@ModelAttribute("product") Product product) {
-        productService.createProduct(product);
-        return "redirect:/products";
-    }
-
-    // 4. Form chỉnh sửa sản phẩm
     @GetMapping("/edit/{id}")
-    public String showEditForm(@PathVariable Long id, Model model) {
-        Product product = productService.getProductById(id);
-        model.addAttribute("product", product);
+    public String editForm(@PathVariable Long id, RedirectAttributes ra, Model model) {
+        Product p = productService.getProductById(id);
+        if (p == null) {
+            ra.addFlashAttribute("error", "Không tìm thấy sản phẩm!");
+            return "redirect:/products";
+        }
+        model.addAttribute("product", p);
         return "product-form";
     }
 
-    // 5. Xóa sản phẩm
-    @GetMapping("/delete/{id}")
-    public String deleteProduct(@PathVariable Long id) {
+    @PostMapping("/save")
+    public String save(@Valid @ModelAttribute("product") Product product,
+                       BindingResult binding,
+                       RedirectAttributes ra) {
+        if (binding.hasErrors()) return "product-form";
+        if (product.getId() == null) {
+            productService.createProduct(product);
+            ra.addFlashAttribute("success", "Tạo sản phẩm thành công!");
+        } else {
+            productService.saveProduct(product);
+            ra.addFlashAttribute("success", "Cập nhật sản phẩm thành công!");
+        }
+        return "redirect:/products";
+    }
+
+    @PostMapping("/delete/{id}")
+    public String delete(@PathVariable Long id, RedirectAttributes ra) {
         productService.deleteProduct(id);
+        ra.addFlashAttribute("success", "Xóa sản phẩm thành công!");
         return "redirect:/products";
     }
 }

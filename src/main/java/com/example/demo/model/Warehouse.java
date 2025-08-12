@@ -4,19 +4,19 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "warehouses") // Xác định tên bảng trong database
+@Table(name = "warehouses") // XÃ¡c Ä‘á»‹nh tÃªn báº£ng trong database
 public class Warehouse {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false, length = 20) // Code là duy nhất và bắt buộc
+    @Column(unique = true, nullable = false, length = 20) // Code lÃ  duy nháº¥t vÃ  báº¯t buá»™c
     private String code;
 
-    @Column(nullable = false, length = 100) // Tên kho bắt buộc
+    @Column(nullable = false, length = 100) // TÃªn kho báº¯t buá»™c
     private String name;
 
-    @Column(length = 200) // Địa chỉ kho
+    @Column(length = 200) // Äá»‹a chá»‰ kho
     private String location;
 
     @OneToMany(mappedBy = "warehouse", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -73,7 +73,7 @@ public class Warehouse {
         this.transactions = transactions;
     }
 
-    // Phương thức tiện ích
+    // PhÆ°Æ¡ng thá»©c tiá»‡n Ã­ch
     public void addTransaction(InventoryTransaction transaction) {
         transactions.add(transaction);
         transaction.setWarehouse(this);
@@ -84,7 +84,7 @@ public class Warehouse {
         transaction.setWarehouse(null);
     }
 
-    // toString() để debug
+    // toString() Ä‘á»ƒ debug
     @Override
     public String toString() {
         return "Warehouse{" +

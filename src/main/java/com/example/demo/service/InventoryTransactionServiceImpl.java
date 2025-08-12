@@ -1,66 +1,71 @@
 package com.example.demo.service;
 
-import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.InventoryTransaction;
-import com.example.demo.model.Product;
-import com.example.demo.model.Warehouse;
 import com.example.demo.repository.InventoryTransactionRepository;
-import com.example.demo.repository.ProductRepository;
-import com.example.demo.repository.WarehouseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
 public class InventoryTransactionServiceImpl implements InventoryTransactionService {
 
     @Autowired
-    private InventoryTransactionRepository repo;
-
-    @Autowired
-    private ProductRepository productRepo;
-
-    @Autowired
-    private WarehouseRepository warehouseRepo;
+    private InventoryTransactionRepository transactionRepository;
 
     @Override
     public List<InventoryTransaction> getAllTransactions() {
-        return repo.findAll();
+        return transactionRepository.findAll();
     }
 
     @Override
-    public InventoryTransaction getTransactionById(Long id) {
-        return repo.findById(id)
-            .orElseThrow(() -> new ResourceNotFoundException(
-                "InventoryTransaction", "id", id));
+    public InventoryTransaction createTransaction(InventoryTransaction transaction) {
+        return transactionRepository.save(transaction);
     }
 
     @Override
-    @Transactional
-    public InventoryTransaction createTransaction(InventoryTransaction tx) {
-        // Load and attach managed Product entity
-        Long pid = tx.getProduct().getId();
-        Product p = productRepo.findById(pid)
-            .orElseThrow(() -> new ResourceNotFoundException(
-                "Product", "id", pid));
-
-        // Load and attach managed Warehouse entity
-        Long wid = tx.getWarehouse().getId();
-        Warehouse w = warehouseRepo.findById(wid)
-            .orElseThrow(() -> new ResourceNotFoundException(
-                "Warehouse", "id", wid));
-
-        tx.setProduct(p);
-        tx.setWarehouse(w);
-
-        return repo.save(tx);
+    public InventoryTransaction saveTransaction(InventoryTransaction transaction) {
+        return transactionRepository.save(transaction);
     }
 
     @Override
     public void deleteTransaction(Long id) {
-        InventoryTransaction existing = getTransactionById(id);
-        repo.delete(existing);
+        transactionRepository.deleteById(id);
+    }
+
+    @Override
+    public Page<InventoryTransaction> findAll(Pageable pageable) {
+        return transactionRepository.findAll(pageable);
+    }
+
+    @Override
+    public InventoryTransaction getTransactionById(Long id) {
+        return transactionRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public Page<InventoryTransaction> search(String type, Long warehouseId, String productName,
+                                             LocalDate start, LocalDate end, Pageable pageable) {
+        boolean hasType = type != null && !type.isBlank();
+        boolean hasWh = warehouseId != null;
+        boolean hasProd = productName != null && !productName.isBlank();
+        boolean hasDate = start != null && end != null;
+
+        if (hasType && !hasWh && !hasProd && !hasDate) {
+            return transactionRepository.findByTransactionTypeIgnoreCase(type, pageable);
+        }
+        if (hasWh && !hasType && !hasProd && !hasDate) {
+            return transactionRepository.findByWarehouse_Id(warehouseId, pageable);
+        }
+        if (hasProd && !hasType && !hasWh && !hasDate) {
+            return transactionRepository.findByProductNameContainingIgnoreCase(productName, pageable);
+        }
+        if (hasDate && !hasType && !hasWh && !hasProd) {
+            return transactionRepository.findByTransactionDateBetween(start, end, pageable);
+        }
+        return transactionRepository.findAll(pageable);
     }
 }

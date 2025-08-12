@@ -21,19 +21,19 @@ public class InventoryTransactionController {
 
     @GetMapping("/{id}")
     public InventoryTransaction getById(@PathVariable Long id) {
-        // gọi đúng phương thức trong service
+        // gá»i Ä‘Ãºng phÆ°Æ¡ng thá»©c trong service
         return service.getTransactionById(id);
     }
 
     @PostMapping
     public InventoryTransaction create(@RequestBody InventoryTransaction transaction) {
-        // gọi đúng phương thức trong service
+        // gá»i Ä‘Ãºng phÆ°Æ¡ng thá»©c trong service
         return service.createTransaction(transaction);
     }
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
-        // gọi đúng phương thức trong service
+        // gá»i Ä‘Ãºng phÆ°Æ¡ng thá»©c trong service
         service.deleteTransaction(id);
     }
 }

@@ -9,7 +9,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/products")
-@CrossOrigin
 public class ProductController {
 
     @Autowired
@@ -20,19 +19,29 @@ public class ProductController {
         return productService.getAllProducts();
     }
 
-    @GetMapping("/{id}")
-    public Product getProductById(@PathVariable Long id) {
-        return productService.getProductById(id);
-    }
-
     @PostMapping
     public Product createProduct(@RequestBody Product product) {
         return productService.createProduct(product);
     }
 
+    @GetMapping("/{id}")
+    public Product getProductById(@PathVariable Long id) {
+        return productService.getProductById(id);
+    }
+
     @PutMapping("/{id}")
-    public Product updateProduct(@PathVariable Long id, @RequestBody Product product) {
-        return productService.updateProduct(id, product);
+    public Product updateProduct(@PathVariable Long id, @RequestBody Product updatedProduct) {
+        Product product = productService.getProductById(id);
+        product.setName(updatedProduct.getName());
+        product.setCategory(updatedProduct.getCategory());
+        product.setDescription(updatedProduct.getDescription());
+        product.setDefaultPrice(updatedProduct.getDefaultPrice());
+        product.setSellPrice(updatedProduct.getSellPrice());
+        product.setUnit(updatedProduct.getUnit());
+        product.setMinStock(updatedProduct.getMinStock());
+        product.setMaxStock(updatedProduct.getMaxStock());
+        product.setQuantity(updatedProduct.getQuantity());
+        return productService.createProduct(product);
     }
 
     @DeleteMapping("/{id}")

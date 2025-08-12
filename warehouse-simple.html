@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý Kho - Warehouse Management</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        .header {
+            background: white;
+            padding: 12px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e0e0e0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .header-left, .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .header i {
+            color: #666;
+            cursor: pointer;
+            font-size: 16px;
+            transition: color 0.2s;
+        }
+
+        .header i:hover {
+            color: #333;
+        }
+
+        .version {
+            font-size: 14px;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .copy-dropdown {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 6px;
+            transition: background-color 0.2s;
+        }
+
+        .copy-dropdown:hover {
+            background-color: #f5f5f5;
+        }
+
+        .copy-dropdown span {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .publish-btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            transition: background-color 0.2s;
+        }
+
+        .publish-btn:hover {
+            background: #0056b3;
+        }
+
+        .notification-bell {
+            position: relative;
+        }
+
+        .notification-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #dc3545;
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .container {
+            display: flex;
+            margin-top: 70px;
+            min-height: calc(100vh - 70px);
+        }
+
+        .sidebar {
+            width: 280px;
+            background: #2c3e50;
+            color: white;
+            padding: 24px 0;
+            overflow-y: auto;
+            position: fixed;
+            left: 0;
+            top: 70px;
+            height: calc(100vh - 70px);
+        }
+
+        .sidebar-header h2 {
+            padding: 0 24px 24px 24px;
+            font-size: 20px;
+            font-weight: 600;
+            border-bottom: 1px solid #34495e;
+            margin-bottom: 24px;
+        }
+
+        .nav-menu {
+            list-style: none;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px 24px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-left: 4px solid transparent;
+        }
+
+        .nav-item:hover {
+            background: #34495e;
+        }
+
+        .nav-item.active {
+            background: #3498db;
+            border-left-color: #2980b9;
+        }
+
+        .nav-item i {
+            font-size: 18px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .nav-item span {
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .nav-item a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            padding: 32px;
+        }
+
+        .dashboard {
+            max-width: 1200px;
+        }
+
+        .page-header {
+            margin-bottom: 32px;
+            font-size: 28px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .metric-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .metric-card {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 4px solid;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+
+        .metric-card.blue {
+            border-left-color: #3498db;
+        }
+
+        .metric-card.green {
+            border-left-color: #2ecc71;
+        }
+
+        .metric-card.orange {
+            border-left-color: #f39c12;
+        }
+
+        .metric-card.red {
+            border-left-color: #e74c3c;
+        }
+
+        .metric-info h3 {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .metric-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .metric-dot {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+        }
+
+        .blue-dot {
+            background: #3498db;
+        }
+
+        .green-dot {
+            background: #2ecc71;
+        }
+
+        .orange-dot {
+            background: #f39c12;
+        }
+
+        .red-dot {
+            background: #e74c3c;
+        }
+
+        .warning-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .warning-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            border-left: 4px solid #f39c12;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .warning-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+
+        .warning-icon {
+            font-size: 24px;
+            color: #f39c12;
+        }
+
+        .warning-card span {
+            font-size: 16px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background-color 0.2s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            background: #2980b9;
+        }
+
+        .btn-success {
+            background: #2ecc71;
+        }
+
+        .btn-success:hover {
+            background: #27ae60;
+        }
+
+        .btn-warning {
+            background: #f39c12;
+        }
+
+        .btn-warning:hover {
+            background: #e67e22;
+        }
+
+        .btn-danger {
+            background: #e74c3c;
+        }
+
+        .btn-danger:hover {
+            background: #c0392b;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                position: relative;
+                top: 0;
+                height: auto;
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding: 24px 16px;
+            }
+            
+            .container {
+                flex-direction: column;
+                margin-top: 70px;
+            }
+            
+            .metric-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .warning-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Header Bar -->
+    <header class="header">
+        <div class="header-left">
+            <i class="fas fa-eye"></i>
+            <i class="fas fa-code"></i>
+            <span class="version">v5 Latest</span>
+            <i class="fas fa-sync-alt"></i>
+            <div class="copy-dropdown">
+                <span>Copy <i class="fas fa-chevron-down"></i></span>
+            </div>
+            <button class="publish-btn">
+                <i class="fas fa-paper-plane"></i> Publish
+            </button>
+            <i class="fas fa-times"></i>
+        </div>
+        <div class="header-right">
+            <i class="fas fa-search"></i>
+            <i class="fas fa-star"></i>
+            <div class="notification-bell">
+                <i class="fas fa-bell"></i>
+                <span class="notification-count">1</span>
+            </div>
+            <i class="fas fa-download"></i>
+            <i class="fas fa-square"></i>
+            <i class="fas fa-th"></i>
+            <i class="fas fa-user"></i>
+            <i class="fas fa-bars"></i>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Left Navigation Sidebar -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <h2>Quản lý Kho</h2>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <i class="fas fa-file-alt"></i>
+                    <span>Quản lý Kho</span>
+                </li>
+                <li class="nav-item active">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Tổng quan</span>
+                </li>
+                <li class="nav-item">
+                    <i class="fas fa-cube"></i>
+                    <span><a href="#products">Sản phẩm</a></span>
+                </li>
+                <li class="nav-item">
+                    <i class="fas fa-clipboard-list"></i>
+                    <span><a href="#inventory">Tồn kho</a></span>
+                </li>
+                <li class="nav-item">
+                    <i class="fas fa-warehouse"></i>
+                    <span><a href="#warehouses">Quản lý Kho</a></span>
+                </li>
+                <li class="nav-item">
+                    <i class="fas fa-arrow-up"></i>
+                    <span>Nhập kho</span>
+                </li>
+                <li class="nav-item">
+                    <i class="fas fa-arrow-down"></i>
+                    <span>Xuất kho</span>
+                </li>
+                <li class="nav-item">
+                    <i class="fas fa-file-alt"></i>
+                    <span>Báo cáo</span>
+                </li>
+                <li class="nav-item">
+                    <i class="fas fa-users"></i>
+                    <span>Người dùng</span>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <div class="dashboard">
+                <h1 class="page-header">Tổng quan - Quản lý Kho</h1>
+                
+                <!-- Metric Cards -->
+                <div class="metric-cards">
+                    <div class="metric-card blue">
+                        <div class="metric-info">
+                            <h3>Tổng sản phẩm</h3>
+                            <div class="metric-value" id="totalProducts">2</div>
+                        </div>
+                        <div class="metric-dot blue-dot"></div>
+                    </div>
+
+                    <div class="metric-card green">
+                        <div class="metric-info">
+                            <h3>Số kho</h3>
+                            <div class="metric-value" id="totalWarehouses">2</div>
+                        </div>
+                        <div class="metric-dot green-dot"></div>
+                    </div>
+
+                    <div class="metric-card orange">
+                        <div class="metric-info">
+                            <h3>Sắp hết hàng</h3>
+                            <div class="metric-value" id="lowStockCount">0</div>
+                        </div>
+                        <div class="metric-dot orange-dot"></div>
+                    </div>
+
+                    <div class="metric-card red">
+                        <div class="metric-info">
+                            <h3>Sắp hết hạn</h3>
+                            <div class="metric-value" id="expiringCount">0</div>
+                        </div>
+                        <div class="metric-dot red-dot"></div>
+                    </div>
+                </div>
+
+                <!-- Warning Cards -->
+                <div class="warning-cards">
+                    <div class="warning-card">
+                        <i class="fas fa-exclamation-triangle warning-icon"></i>
+                        <span>Hàng sắp hết tồn kho</span>
+                    </div>
+                    <div class="warning-card">
+                        <i class="fas fa-calendar-alt warning-icon"></i>
+                        <span>Hàng sắp hết hạn</span>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <a href="#products" class="btn btn-success">
+                        <i class="fas fa-plus"></i> Thêm Sản phẩm
+                    </a>
+                    <a href="#inventory" class="btn btn-warning">
+                        <i class="fas fa-eye"></i> Xem Tồn kho
+                    </a>
+                    <a href="#warehouses" class="btn">
+                        <i class="fas fa-warehouse"></i> Quản lý Kho
+                    </a>
+                </div>
+
+                <!-- Quick Access Sections -->
+                <div style="margin-top: 40px;">
+                    <h2 style="margin-bottom: 20px; color: #333;">Truy cập nhanh</h2>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+                        <div style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                            <h3 style="color: #3498db; margin-bottom: 10px;">
+                                <i class="fas fa-cube"></i> Quản lý Sản phẩm
+                            </h3>
+                            <p style="color: #666; margin-bottom: 15px;">Thêm, sửa, xóa và quản lý danh sách sản phẩm trong kho</p>
+                            <a href="#products" class="btn btn-sm">Truy cập</a>
+                        </div>
+                        
+                        <div style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                            <h3 style="color: #2ecc71; margin-bottom: 10px;">
+                                <i class="fas fa-clipboard-list"></i> Tồn kho
+                            </h3>
+                            <p style="color: #666; margin-bottom: 15px;">Xem và cập nhật số lượng tồn kho của các sản phẩm</p>
+                            <a href="#inventory" class="btn btn-sm">Truy cập</a>
+                        </div>
+                        
+                        <div style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                            <h3 style="color: #f39c12; margin-bottom: 10px;">
+                                <i class="fas fa-warehouse"></i> Quản lý Kho
+                            </h3>
+                            <p style="color: #666; margin-bottom: 15px;">Thêm kho mới và quản lý thông tin kho hàng</p>
+                            <a href="#warehouses" class="btn btn-sm">Truy cập</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Simple JavaScript for basic functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Update metrics from localStorage if available
+            updateMetrics();
+            
+            // Add click handlers for navigation
+            setupNavigation();
+        });
+
+        function updateMetrics() {
+            try {
+                // Try to get data from localStorage
+                const products = JSON.parse(localStorage.getItem('products')) || [];
+                const warehouses = JSON.parse(localStorage.getItem('warehouses')) || [];
+                
+                // Update product count
+                document.getElementById('totalProducts').textContent = products.length;
+                
+                // Update warehouse count
+                document.getElementById('totalWarehouses').textContent = warehouses.length;
+                
+                // Calculate low stock count
+                const lowStockCount = products.filter(p => p.quantity <= 5 && p.quantity > 0).length;
+                document.getElementById('lowStockCount').textContent = lowStockCount;
+                
+            } catch (error) {
+                console.log('No data found in localStorage');
+            }
+        }
+
+        function setupNavigation() {
+            // Add click handlers for navigation links
+            const navLinks = document.querySelectorAll('.nav-item a');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    
+                    // Show appropriate section or navigate
+                    if (target === 'products') {
+                        showProductsSection();
+                    } else if (target === 'inventory') {
+                        showInventorySection();
+                    } else if (target === 'warehouses') {
+                        showWarehousesSection();
+                    }
+                });
+            });
+        }
+
+        function showProductsSection() {
+            alert('Chức năng Quản lý Sản phẩm\n\nĐể sử dụng đầy đủ, hãy mở file products.html riêng biệt.');
+        }
+
+        function showInventorySection() {
+            alert('Chức năng Quản lý Tồn kho\n\nĐể sử dụng đầy đủ, hãy mở file inventory.html riêng biệt.');
+        }
+
+        function showWarehousesSection() {
+            alert('Chức năng Quản lý Kho\n\nĐể sử dụng đầy đủ, hãy mở file warehouses.html riêng biệt.');
+        }
+
+        // Add some interactive features
+        document.querySelectorAll('.metric-card').forEach(card => {
+            card.addEventListener('click', function() {
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 150);
+            });
+        });
+
+        // Header interactions
+        document.querySelector('.publish-btn').addEventListener('click', function() {
+            alert('Đang xuất bản...');
+        });
+
+        document.querySelector('.notification-bell').addEventListener('click', function() {
+            alert('Bạn có 1 thông báo mới!');
+        });
+    </script>
+</body>
+</html>

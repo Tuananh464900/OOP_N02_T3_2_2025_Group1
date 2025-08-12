@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý Kho - Warehouse Management</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Top Header Bar -->
+    <header class="header">
+        <div class="header-left">
+            <i class="fas fa-eye"></i>
+            <i class="fas fa-code"></i>
+            <span class="version">v5 Latest</span>
+            <i class="fas fa-sync-alt"></i>
+            <div class="copy-dropdown">
+                <span>Copy <i class="fas fa-chevron-down"></i></span>
+            </div>
+            <button class="publish-btn">
+                <i class="fas fa-paper-plane"></i> Publish
+            </button>
+            <i class="fas fa-times"></i>
+        </div>
+        <div class="header-right">
+            <i class="fas fa-search"></i>
+            <i class="fas fa-star"></i>
+            <div class="notification-bell">
+                <i class="fas fa-bell"></i>
+                <span class="notification-count">1</span>
+            </div>
+            <i class="fas fa-download"></i>
+            <i class="fas fa-download"></i>
+            <i class="fas fa-square"></i>
+            <i class="fas fa-th"></i>
+            <i class="fas fa-user"></i>
+            <i class="fas fa-bars"></i>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Left Navigation Sidebar -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <h2>Quản lý Kho</h2>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <i class="fas fa-file-alt"></i>
+                    <span>Quản lý Kho</span>
+                </li>
+                <li class="nav-item active">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Tổng quan</span>
+                </li>
+                <li class="nav-item">
+                    <i class="fas fa-cube"></i>
+                    <span>Sản phẩm</span>
+                </li>
+                <li class="nav-item">
+                    <i class="fas fa-clipboard-list"></i>
+                    <span>Tồn kho</span>
+                </li>
+                <li class="nav-item">
+                    <i class="fas fa-arrow-up"></i>
+                    <span>Nhập kho</span>
+                </li>
+                <li class="nav-item">
+                    <i class="fas fa-arrow-down"></i>
+                    <span>Xuất kho</span>
+                </li>
+                <li class="nav-item">
+                    <i class="fas fa-file-alt"></i>
+                    <span>Báo cáo</span>
+                </li>
+                <li class="nav-item">
+                    <i class="fas fa-users"></i>
+                    <span>Người dùng</span>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <div class="dashboard">
+                <!-- Metric Cards -->
+                <div class="metric-cards">
+                    <div class="metric-card blue">
+                        <div class="metric-info">
+                            <h3>Tổng sản phẩm</h3>
+                            <div class="metric-value">2</div>
+                        </div>
+                        <div class="metric-dot blue-dot"></div>
+                    </div>
+
+                    <div class="metric-card green">
+                        <div class="metric-info">
+                            <h3>Số kho</h3>
+                            <div class="metric-value">2</div>
+                        </div>
+                        <div class="metric-dot green-dot"></div>
+                    </div>
+
+                    <div class="metric-card orange">
+                        <div class="metric-info">
+                            <h3>Sắp hết hàng</h3>
+                            <div class="metric-value">0</div>
+                        </div>
+                        <div class="metric-dot orange-dot"></div>
+                    </div>
+
+                    <div class="metric-card red">
+                        <div class="metric-info">
+                            <h3>Sắp hết hạn</h3>
+                            <div class="metric-value">0</div>
+                        </div>
+                        <div class="metric-dot red-dot"></div>
+                    </div>
+                </div>
+
+                <!-- Warning Cards -->
+                <div class="warning-cards">
+                    <div class="warning-card">
+                        <i class="fas fa-exclamation-triangle warning-icon"></i>
+                        <span>Hàng sắp hết tồn kho</span>
+                    </div>
+                    <div class="warning-card">
+                        <i class="fas fa-calendar-alt warning-icon"></i>
+                        <span>Hàng sắp hết hạn</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

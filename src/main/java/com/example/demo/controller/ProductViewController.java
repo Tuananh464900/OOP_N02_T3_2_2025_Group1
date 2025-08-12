@@ -20,18 +20,30 @@ public class ProductViewController {
     @Autowired
     private ProductService productService;
 
+    @GetMapping("/test")
+    @ResponseBody
+    public String test() {
+        return "Product controller is working! Product count: " + productService.getAllProducts().size();
+    }
+
     @GetMapping
     public String list(@RequestParam(defaultValue = "0") int page,
                        @RequestParam(defaultValue = "10") int size,
                        @RequestParam(required = false) String q,
                        Model model) {
-        Pageable pageable = PageRequest.of(page, size);
-        Page<Product> data = (q == null || q.isBlank())
-                ? productService.findAll(pageable)
-                : productService.findByName(q, pageable);
-        model.addAttribute("page", data);
-        model.addAttribute("q", q);
-        return "product-list";
+        try {
+            Pageable pageable = PageRequest.of(page, size);
+            Page<Product> data = (q == null || q.isBlank())
+                    ? productService.findAll(pageable)
+                    : productService.findByName(q, pageable);
+            model.addAttribute("page", data);
+            model.addAttribute("q", q);
+            return "product-list";
+        } catch (Exception e) {
+            model.addAttribute("error", "Error loading products: " + e.getMessage());
+            e.printStackTrace();
+            return "product-list";
+        }
     }
 
     @GetMapping("/create")

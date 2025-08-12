@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tồn kho - Quản lý Kho</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .inventory-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            text-align: center;
+            border-left: 4px solid;
+        }
+        
+        .stat-card.blue {
+            border-left-color: #3498db;
+        }
+        
+        .stat-card.green {
+            border-left-color: #2ecc71;
+        }
+        
+        .stat-card.orange {
+            border-left-color: #f39c12;
+        }
+        
+        .stat-card.red {
+            border-left-color: #e74c3c;
+        }
+        
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            color: #666;
+            font-weight: 500;
+        }
+        
+        .inventory-controls {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 24px;
+        }
+        
+        .control-row {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .control-group label {
+            font-weight: 500;
+            color: #333;
+            font-size: 14px;
+        }
+        
+        .control-group select, .control-group input {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            min-width: 150px;
+        }
+        
+        .btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+        
+        .btn:hover {
+            background: #2980b9;
+        }
+        
+        .btn-success {
+            background: #2ecc71;
+        }
+        
+        .btn-success:hover {
+            background: #27ae60;
+        }
+        
+        .btn-warning {
+            background: #f39c12;
+        }
+        
+        .btn-warning:hover {
+            background: #e67e22;
+        }
+        
+        .inventory-list {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .inventory-list-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .inventory-list-header h3 {
+            margin: 0;
+            color: #333;
+        }
+        
+        .search-box {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .search-box input {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            width: 250px;
+        }
+        
+        .inventory-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .inventory-table th {
+            background: #f8f9fa;
+            padding: 16px 24px;
+            text-align: left;
+            font-weight: 600;
+            color: #333;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .inventory-table td {
+            padding: 16px 24px;
+            border-bottom: 1px solid #eee;
+            color: #666;
+        }
+        
+        .inventory-table tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .quantity-input {
+            width: 80px;
+            padding: 6px 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            text-align: center;
+        }
+        
+        .quantity-input:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.1);
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+        
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .status-normal {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status-low {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .status-out {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .stock-warning {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+        }
+        
+        .stock-warning h4 {
+            color: #856404;
+            margin: 0 0 8px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .stock-warning p {
+            color: #856404;
+            margin: 0;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        
+        .modal-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 24px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .modal-header h3 {
+            margin: 0;
+            color: #333;
+        }
+        
+        .close {
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .close:hover {
+            color: #333;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #333;
+        }
+        
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            margin-top: 24px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Header Bar -->
+    <header class="header">
+        <div class="header-left">
+            <i class="fas fa-eye"></i>
+            <i class="fas fa-code"></i>
+            <span class="version">v5 Latest</span>
+            <i class="fas fa-sync-alt"></i>
+            <div class="copy-dropdown">
+                <span>Copy <i class="fas fa-chevron-down"></i></span>
+            </div>
+            <button class="publish-btn">
+                <i class="fas fa-paper-plane"></i> Publish
+            </button>
+            <i class="fas fa-times"></i>
+        </div>
+        <div class="header-right">
+            <i class="fas fa-search"></i>
+            <i class="fas fa-star"></i>
+            <div class="notification-bell">
+                <i class="fas fa-bell"></i>
+                <span class="notification-count">1</span>
+            </div>
+            <i class="fas fa-download"></i>
+            <i class="fas fa-square"></i>
+            <i class="fas fa-th"></i>
+            <i class="fas fa-user"></i>
+            <i class="fas fa-bars"></i>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Left Navigation Sidebar -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <h2>Quản lý Kho</h2>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <i class="fas fa-file-alt"></i>
+                    <span>Quản lý Kho</span>
+                </li>
+                <li class="nav-item">
+                    <i class="fas fa-chart-bar"></i>
+                    <span><a href="index.html" style="color: white; text-decoration: none;">Tổng quan</a></span>
+                </li>
+                <li class="nav-item">
+                    <i class="fas fa-cube"></i>
+                    <span><a href="products.html" style="color: white; text-decoration: none;">Sản phẩm</a></span>
+                </li>
+                <li class="nav-item active">
+                    <i class="fas fa-clipboard-list"></i>
+                    <span>Tồn kho</span>
+                </li>
+                <li class="nav-item">
+                    <i class="fas fa-arrow-up"></i>
+                    <span>Nhập kho</span>
+                </li>
+                <li class="nav-item">
+                    <i class="fas fa-arrow-down"></i>
+                    <span>Xuất kho</span>
+                </li>
+                <li class="nav-item">
+                    <i class="fas fa-file-alt"></i>
+                    <span>Báo cáo</span>
+                </li>
+                <li class="nav-item">
+                    <i class="fas fa-users"></i>
+                    <span>Người dùng</span>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <div class="dashboard">
+                <h1 class="page-header">Quản lý Tồn kho</h1>
+                
+                <!-- Stock Warnings -->
+                <div class="stock-warning" id="stockWarning" style="display: none;">
+                    <h4>
+                        <i class="fas fa-exclamation-triangle"></i>
+                        Cảnh báo: Có sản phẩm sắp hết hàng
+                    </h4>
+                    <p id="warningMessage"></p>
+                </div>
+                
+                <!-- Inventory Statistics -->
+                <div class="inventory-stats">
+                    <div class="stat-card blue">
+                        <div class="stat-value" id="totalProducts">0</div>
+                        <div class="stat-label">Tổng sản phẩm</div>
+                    </div>
+                    <div class="stat-card green">
+                        <div class="stat-value" id="totalQuantity">0</div>
+                        <div class="stat-label">Tổng số lượng</div>
+                    </div>
+                    <div class="stat-card orange">
+                        <div class="stat-value" id="lowStockCount">0</div>
+                        <div class="stat-label">Sắp hết hàng</div>
+                    </div>
+                    <div class="stat-card red">
+                        <div class="stat-value" id="outOfStockCount">0</div>
+                        <div class="stat-label">Hết hàng</div>
+                    </div>
+                </div>
+
+                <!-- Inventory Controls -->
+                <div class="inventory-controls">
+                    <h3><i class="fas fa-filter"></i> Bộ lọc và Thao tác</h3>
+                    <div class="control-row">
+                        <div class="control-group">
+                            <label>Danh mục</label>
+                            <select id="categoryFilter">
+                                <option value="">Tất cả danh mục</option>
+                                <option value="electronics">Điện tử</option>
+                                <option value="clothing">Quần áo</option>
+                                <option value="books">Sách</option>
+                                <option value="food">Thực phẩm</option>
+                                <option value="other">Khác</option>
+                            </select>
+                        </div>
+                        <div class="control-group">
+                            <label>Trạng thái tồn kho</label>
+                            <select id="stockStatusFilter">
+                                <option value="">Tất cả trạng thái</option>
+                                <option value="normal">Bình thường</option>
+                                <option value="low">Sắp hết</option>
+                                <option value="out">Hết hàng</option>
+                            </select>
+                        </div>
+                        <div class="control-group">
+                            <label>Tìm kiếm</label>
+                            <input type="text" id="searchInventory" placeholder="Tìm theo tên hoặc mã SP...">
+                        </div>
+                        <button class="btn" onclick="applyFilters()">
+                            <i class="fas fa-search"></i> Lọc
+                        </button>
+                        <button class="btn btn-success" onclick="exportInventory()">
+                            <i class="fas fa-download"></i> Xuất báo cáo
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Inventory List -->
+                <div class="inventory-list">
+                    <div class="inventory-list-header">
+                        <h3><i class="fas fa-list"></i> Danh sách Tồn kho</h3>
+                        <div class="search-box">
+                            <input type="text" id="quickSearch" placeholder="Tìm kiếm nhanh...">
+                            <button class="btn" onclick="quickSearch()">
+                                <i class="fas fa-search"></i> Tìm
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <table class="inventory-table">
+                        <thead>
+                            <tr>
+                                <th>Mã SP</th>
+                                <th>Tên sản phẩm</th>
+                                <th>Danh mục</th>
+                                <th>Đơn vị</th>
+                                <th>Số lượng hiện tại</th>
+                                <th>Trạng thái</th>
+                                <th>Giá trị tồn kho</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody id="inventoryTableBody">
+                            <!-- Inventory items will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Update Quantity Modal -->
+    <div id="updateModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Cập nhật số lượng tồn kho</h3>
+                <span class="close" onclick="closeModal()">&times;</span>
+            </div>
+            <form id="updateQuantityForm">
+                <div class="form-group">
+                    <label>Sản phẩm</label>
+                    <input type="text" id="modalProductName" readonly>
+                </div>
+                <div class="form-group">
+                    <label>Số lượng hiện tại</label>
+                    <input type="number" id="modalCurrentQuantity" readonly>
+                </div>
+                <div class="form-group">
+                    <label>Số lượng mới *</label>
+                    <input type="number" id="modalNewQuantity" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label>Lý do thay đổi</label>
+                    <select id="modalReason">
+                        <option value="adjustment">Điều chỉnh tồn kho</option>
+                        <option value="damage">Hàng hư hỏng</option>
+                        <option value="loss">Hàng mất mát</option>
+                        <option value="other">Khác</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Hủy</button>
+                    <button type="submit" class="btn btn-success">Cập nhật</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Inventory Management JavaScript
+        let inventory = [];
+        let currentProductId = null;
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            loadInventory();
+            setupEventListeners();
+        });
+        
+        function setupEventListeners() {
+            // Category filter change
+            document.getElementById('categoryFilter').addEventListener('change', applyFilters);
+            document.getElementById('stockStatusFilter').addEventListener('change', applyFilters);
+            
+            // Search input
+            document.getElementById('searchInventory').addEventListener('input', applyFilters);
+            document.getElementById('quickSearch').addEventListener('input', quickSearch);
+            
+            // Update form
+            document.getElementById('updateQuantityForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                updateProductQuantity();
+            });
+        }
+        
+        function loadInventory() {
+            // Get products from localStorage
+            const products = JSON.parse(localStorage.getItem('products')) || [];
+            
+            // Convert products to inventory format
+            inventory = products.map(product => ({
+                ...product,
+                stockValue: product.quantity * product.importPrice,
+                stockStatus: getStockStatus(product.quantity)
+            }));
+            
+            updateStatistics();
+            displayInventory(inventory);
+            checkStockWarnings();
+        }
+        
+        function getStockStatus(quantity) {
+            if (quantity === 0) return 'out';
+            if (quantity <= 5) return 'low';
+            return 'normal';
+        }
+        
+        function updateStatistics() {
+            const totalProducts = inventory.length;
+            const totalQuantity = inventory.reduce((sum, item) => sum + item.quantity, 0);
+            const lowStockCount = inventory.filter(item => item.stockStatus === 'low').length;
+            const outOfStockCount = inventory.filter(item => item.stockStatus === 'out').length;
+            
+            document.getElementById('totalProducts').textContent = totalProducts;
+            document.getElementById('totalQuantity').textContent = totalQuantity;
+            document.getElementById('lowStockCount').textContent = lowStockCount;
+            document.getElementById('outOfStockCount').textContent = outOfStockCount;
+        }
+        
+        function displayInventory(items) {
+            const tbody = document.getElementById('inventoryTableBody');
+            tbody.innerHTML = '';
+            
+            if (items.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 40px; color: #666;">Không có dữ liệu tồn kho.</td></tr>';
+                return;
+            }
+            
+            items.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><strong>${item.code}</strong></td>
+                    <td>${item.name}</td>
+                    <td>${getCategoryName(item.category)}</td>
+                    <td>${item.unit}</td>
+                    <td>
+                        <span class="quantity-badge">${item.quantity}</span>
+                    </td>
+                    <td>
+                        <span class="status-badge status-${item.stockStatus}">
+                            ${getStockStatusText(item.stockStatus)}
+                        </span>
+                    </td>
+                    <td>${formatPrice(item.stockValue)}</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn btn-sm" onclick="openUpdateModal(${item.id})">
+                                <i class="fas fa-edit"></i> Cập nhật
+                            </button>
+                            <button class="btn btn-sm btn-warning" onclick="adjustStock(${item.id})">
+                                <i class="fas fa-plus"></i> Điều chỉnh
+                            </button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+        
+        function getStockStatusText(status) {
+            const statusTexts = {
+                'normal': 'Bình thường',
+                'low': 'Sắp hết',
+                'out': 'Hết hàng'
+            };
+            return statusTexts[status] || status;
+        }
+        
+        function getCategoryName(category) {
+            const categories = {
+                'electronics': 'Điện tử',
+                'clothing': 'Quần áo',
+                'books': 'Sách',
+                'food': 'Thực phẩm',
+                'other': 'Khác'
+            };
+            return categories[category] || category;
+        }
+        
+        function formatPrice(price) {
+            if (price === 0) return 'Chưa có';
+            return new Intl.NumberFormat('vi-VN', {
+                style: 'currency',
+                currency: 'VND'
+            }).format(price);
+        }
+        
+        function applyFilters() {
+            const categoryFilter = document.getElementById('categoryFilter').value;
+            const statusFilter = document.getElementById('stockStatusFilter').value;
+            const searchTerm = document.getElementById('searchInventory').value.toLowerCase();
+            
+            let filteredInventory = inventory.filter(item => {
+                const categoryMatch = !categoryFilter || item.category === categoryFilter;
+                const statusMatch = !statusFilter || item.stockStatus === statusFilter;
+                const searchMatch = !searchTerm || 
+                    item.name.toLowerCase().includes(searchTerm) ||
+                    item.code.toLowerCase().includes(searchTerm);
+                
+                return categoryMatch && statusMatch && searchMatch;
+            });
+            
+            displayInventory(filteredInventory);
+        }
+        
+        function quickSearch() {
+            const searchTerm = document.getElementById('quickSearch').value.toLowerCase();
+            
+            if (!searchTerm) {
+                displayInventory(inventory);
+                return;
+            }
+            
+            const filteredInventory = inventory.filter(item => 
+                item.name.toLowerCase().includes(searchTerm) ||
+                item.code.toLowerCase().includes(searchTerm)
+            );
+            
+            displayInventory(filteredInventory);
+        }
+        
+        function openUpdateModal(productId) {
+            const product = inventory.find(item => item.id === productId);
+            if (product) {
+                currentProductId = productId;
+                document.getElementById('modalProductName').value = product.name;
+                document.getElementById('modalCurrentQuantity').value = product.quantity;
+                document.getElementById('modalNewQuantity').value = product.quantity;
+                document.getElementById('modalReason').value = 'adjustment';
+                
+                document.getElementById('updateModal').style.display = 'block';
+            }
+        }
+        
+        function closeModal() {
+            document.getElementById('updateModal').style.display = 'none';
+            currentProductId = null;
+        }
+        
+        function updateProductQuantity() {
+            const newQuantity = parseInt(document.getElementById('modalNewQuantity').value);
+            const reason = document.getElementById('modalReason').value;
+            
+            if (currentProductId) {
+                // Update in inventory
+                const inventoryItem = inventory.find(item => item.id === currentProductId);
+                if (inventoryItem) {
+                    inventoryItem.quantity = newQuantity;
+                    inventoryItem.stockStatus = getStockStatus(newQuantity);
+                    inventoryItem.stockValue = newQuantity * inventoryItem.importPrice;
+                }
+                
+                // Update in products (localStorage)
+                const products = JSON.parse(localStorage.getItem('products')) || [];
+                const productIndex = products.findIndex(p => p.id === currentProductId);
+                if (productIndex !== -1) {
+                    products[productIndex].quantity = newQuantity;
+                    localStorage.setItem('products', JSON.stringify(products));
+                }
+                
+                // Update display
+                updateStatistics();
+                displayInventory(inventory);
+                checkStockWarnings();
+                
+                closeModal();
+                showNotification('Số lượng tồn kho đã được cập nhật!', 'success');
+            }
+        }
+        
+        function adjustStock(productId) {
+            openUpdateModal(productId);
+        }
+        
+        function checkStockWarnings() {
+            const lowStockItems = inventory.filter(item => item.stockStatus === 'low');
+            const outOfStockItems = inventory.filter(item => item.stockStatus === 'out');
+            
+            const warningDiv = document.getElementById('stockWarning');
+            const warningMessage = document.getElementById('warningMessage');
+            
+            if (lowStockItems.length > 0 || outOfStockItems.length > 0) {
+                let message = '';
+                if (outOfStockItems.length > 0) {
+                    message += `${outOfStockItems.length} sản phẩm đã hết hàng. `;
+                }
+                if (lowStockItems.length > 0) {
+                    message += `${lowStockItems.length} sản phẩm sắp hết hàng. `;
+                }
+                message += 'Vui lòng kiểm tra và bổ sung hàng hóa.';
+                
+                warningMessage.textContent = message;
+                warningDiv.style.display = 'block';
+            } else {
+                warningDiv.style.display = 'none';
+            }
+        }
+        
+        function exportInventory() {
+            // Create CSV content
+            let csvContent = 'Mã SP,Tên sản phẩm,Danh mục,Đơn vị,Số lượng,Trạng thái,Giá trị tồn kho\n';
+            
+            inventory.forEach(item => {
+                csvContent += `${item.code},"${item.name}",${getCategoryName(item.category)},${item.unit},${item.quantity},${getStockStatusText(item.stockStatus)},${item.stockValue}\n`;
+            });
+            
+            // Create download link
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            link.setAttribute('href', url);
+            link.setAttribute('download', `ton-kho-${new Date().toISOString().split('T')[0]}.csv`);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            showNotification('Báo cáo tồn kho đã được xuất thành công!', 'success');
+        }
+        
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('updateModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+    </script>
+</body>
+</html>

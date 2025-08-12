@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sản phẩm - Quản lý Kho</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .product-form {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 24px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #333;
+        }
+        
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.2s;
+        }
+        
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+        
+        .btn:hover {
+            background: #2980b9;
+        }
+        
+        .btn-secondary {
+            background: #95a5a6;
+        }
+        
+        .btn-secondary:hover {
+            background: #7f8c8d;
+        }
+        
+        .btn-success {
+            background: #2ecc71;
+        }
+        
+        .btn-success:hover {
+            background: #27ae60;
+        }
+        
+        .btn-danger {
+            background: #e74c3c;
+        }
+        
+        .btn-danger:hover {
+            background: #c0392b;
+        }
+        
+        .product-list {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .product-list-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .product-list-header h3 {
+            margin: 0;
+            color: #333;
+        }
+        
+        .search-box {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .search-box input {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            width: 250px;
+        }
+        
+        .product-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .product-table th {
+            background: #f8f9fa;
+            padding: 16px 24px;
+            text-align: left;
+            font-weight: 600;
+            color: #333;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .product-table td {
+            padding: 16px 24px;
+            border-bottom: 1px solid #eee;
+            color: #666;
+        }
+        
+        .product-table tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+        
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .status-active {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status-inactive {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Header Bar -->
+    <header class="header">
+        <div class="header-left">
+            <i class="fas fa-eye"></i>
+            <i class="fas fa-code"></i>
+            <span class="version">v5 Latest</span>
+            <i class="fas fa-sync-alt"></i>
+            <div class="copy-dropdown">
+                <span>Copy <i class="fas fa-chevron-down"></i></span>
+            </div>
+            <button class="publish-btn">
+                <i class="fas fa-paper-plane"></i> Publish
+            </button>
+            <i class="fas fa-times"></i>
+        </div>
+        <div class="header-right">
+            <i class="fas fa-search"></i>
+            <i class="fas fa-star"></i>
+            <div class="notification-bell">
+                <i class="fas fa-bell"></i>
+                <span class="notification-count">1</span>
+            </div>
+            <i class="fas fa-download"></i>
+            <i class="fas fa-square"></i>
+            <i class="fas fa-th"></i>
+            <i class="fas fa-user"></i>
+            <i class="fas fa-bars"></i>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Left Navigation Sidebar -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <h2>Quản lý Kho</h2>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <i class="fas fa-file-alt"></i>
+                    <span>Quản lý Kho</span>
+                </li>
+                <li class="nav-item">
+                    <i class="fas fa-chart-bar"></i>
+                    <span><a href="index.html" style="color: white; text-decoration: none;">Tổng quan</a></span>
+                </li>
+                <li class="nav-item active">
+                    <i class="fas fa-cube"></i>
+                    <span>Sản phẩm</span>
+                </li>
+                <li class="nav-item">
+                    <i class="fas fa-clipboard-list"></i>
+                    <span><a href="inventory.html" style="color: white; text-decoration: none;">Tồn kho</a></span>
+                </li>
+                <li class="nav-item">
+                    <i class="fas fa-arrow-up"></i>
+                    <span>Nhập kho</span>
+                </li>
+                <li class="nav-item">
+                    <i class="fas fa-arrow-down"></i>
+                    <span>Xuất kho</span>
+                </li>
+                <li class="nav-item">
+                    <i class="fas fa-file-alt"></i>
+                    <span>Báo cáo</span>
+                </li>
+                <li class="nav-item">
+                    <i class="fas fa-users"></i>
+                    <span>Người dùng</span>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <div class="dashboard">
+                <h1 class="page-header">Quản lý Sản phẩm</h1>
+                
+                <!-- Product Form -->
+                <div class="product-form" id="productForm">
+                    <h3><i class="fas fa-plus-circle"></i> Thêm Sản phẩm mới</h3>
+                    <form id="addProductForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="productCode">Mã sản phẩm *</label>
+                                <input type="text" id="productCode" name="productCode" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="productName">Tên sản phẩm *</label>
+                                <input type="text" id="productName" name="productName" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="category">Danh mục</label>
+                                <select id="category" name="category">
+                                    <option value="">Chọn danh mục</option>
+                                    <option value="electronics">Điện tử</option>
+                                    <option value="clothing">Quần áo</option>
+                                    <option value="books">Sách</option>
+                                    <option value="food">Thực phẩm</option>
+                                    <option value="other">Khác</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="unit">Đơn vị</label>
+                                <input type="text" id="unit" name="unit" placeholder="Cái, Kg, Cuốn...">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="quantity">Số lượng *</label>
+                                <input type="number" id="quantity" name="quantity" min="0" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="importPrice">Giá nhập (VNĐ)</label>
+                                <input type="number" id="importPrice" name="importPrice" min="0">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="description">Mô tả</label>
+                            <textarea id="description" name="description" rows="3" placeholder="Mô tả chi tiết về sản phẩm..."></textarea>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-secondary" onclick="resetForm()">Làm mới</button>
+                            <button type="submit" class="btn btn-success">Thêm sản phẩm</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Product List -->
+                <div class="product-list">
+                    <div class="product-list-header">
+                        <h3><i class="fas fa-list"></i> Danh sách Sản phẩm</h3>
+                        <div class="search-box">
+                            <input type="text" id="searchProduct" placeholder="Tìm kiếm sản phẩm...">
+                            <button class="btn" onclick="searchProducts()">
+                                <i class="fas fa-search"></i> Tìm kiếm
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <table class="product-table">
+                        <thead>
+                            <tr>
+                                <th>Mã SP</th>
+                                <th>Tên sản phẩm</th>
+                                <th>Danh mục</th>
+                                <th>Đơn vị</th>
+                                <th>Số lượng</th>
+                                <th>Giá nhập</th>
+                                <th>Trạng thái</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody id="productTableBody">
+                            <!-- Products will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Product Management JavaScript
+        let products = JSON.parse(localStorage.getItem('products')) || [];
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            loadProducts();
+            setupProductForm();
+        });
+        
+        function setupProductForm() {
+            const form = document.getElementById('addProductForm');
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                addProduct();
+            });
+        }
+        
+        function addProduct() {
+            const formData = new FormData(document.getElementById('addProductForm'));
+            const product = {
+                id: Date.now(),
+                code: formData.get('productCode'),
+                name: formData.get('productName'),
+                category: formData.get('category'),
+                unit: formData.get('unit'),
+                quantity: parseInt(formData.get('quantity')),
+                importPrice: parseFloat(formData.get('importPrice')) || 0,
+                description: formData.get('description'),
+                status: 'active',
+                createdAt: new Date().toISOString()
+            };
+            
+            products.push(product);
+            saveProducts();
+            loadProducts();
+            resetForm();
+            
+            showNotification('Sản phẩm đã được thêm thành công!', 'success');
+        }
+        
+        function loadProducts() {
+            const tbody = document.getElementById('productTableBody');
+            tbody.innerHTML = '';
+            
+            if (products.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 40px; color: #666;">Chưa có sản phẩm nào. Hãy thêm sản phẩm đầu tiên!</td></tr>';
+                return;
+            }
+            
+            products.forEach(product => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><strong>${product.code}</strong></td>
+                    <td>${product.name}</td>
+                    <td>${getCategoryName(product.category)}</td>
+                    <td>${product.unit}</td>
+                    <td><span class="quantity-badge">${product.quantity}</span></td>
+                    <td>${formatPrice(product.importPrice)}</td>
+                    <td><span class="status-badge status-${product.status}">${product.status === 'active' ? 'Hoạt động' : 'Không hoạt động'}</span></td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn btn-sm" onclick="editProduct(${product.id})">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteProduct(${product.id})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+        
+        function editProduct(id) {
+            const product = products.find(p => p.id === id);
+            if (product) {
+                // Populate form for editing
+                document.getElementById('productCode').value = product.code;
+                document.getElementById('productName').value = product.name;
+                document.getElementById('category').value = product.category;
+                document.getElementById('unit').value = product.unit;
+                document.getElementById('quantity').value = product.quantity;
+                document.getElementById('importPrice').value = product.importPrice;
+                document.getElementById('description').value = product.description;
+                
+                // Change form to edit mode
+                document.querySelector('.product-form h3').innerHTML = '<i class="fas fa-edit"></i> Chỉnh sửa Sản phẩm';
+                document.querySelector('.form-actions .btn-success').textContent = 'Cập nhật';
+                
+                // Store editing product ID
+                document.getElementById('addProductForm').dataset.editingId = id;
+            }
+        }
+        
+        function deleteProduct(id) {
+            if (confirm('Bạn có chắc chắn muốn xóa sản phẩm này?')) {
+                products = products.filter(p => p.id !== id);
+                saveProducts();
+                loadProducts();
+                showNotification('Sản phẩm đã được xóa!', 'success');
+            }
+        }
+        
+        function resetForm() {
+            document.getElementById('addProductForm').reset();
+            document.querySelector('.product-form h3').innerHTML = '<i class="fas fa-plus-circle"></i> Thêm Sản phẩm mới';
+            document.querySelector('.form-actions .btn-success').textContent = 'Thêm sản phẩm';
+            delete document.getElementById('addProductForm').dataset.editingId;
+        }
+        
+        function searchProducts() {
+            const searchTerm = document.getElementById('searchProduct').value.toLowerCase();
+            const filteredProducts = products.filter(product => 
+                product.name.toLowerCase().includes(searchTerm) ||
+                product.code.toLowerCase().includes(searchTerm) ||
+                product.category.toLowerCase().includes(searchTerm)
+            );
+            
+            displayFilteredProducts(filteredProducts);
+        }
+        
+        function displayFilteredProducts(filteredProducts) {
+            const tbody = document.getElementById('productTableBody');
+            tbody.innerHTML = '';
+            
+            if (filteredProducts.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 40px; color: #666;">Không tìm thấy sản phẩm nào.</td></tr>';
+                return;
+            }
+            
+            filteredProducts.forEach(product => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><strong>${product.code}</strong></td>
+                    <td>${product.name}</td>
+                    <td>${getCategoryName(product.category)}</td>
+                    <td>${product.unit}</td>
+                    <td><span class="quantity-badge">${product.quantity}</span></td>
+                    <td>${formatPrice(product.importPrice)}</td>
+                    <td><span class="status-badge status-${product.status}">${product.status === 'active' ? 'Hoạt động' : 'Không hoạt động'}</span></td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn btn-sm" onclick="editProduct(${product.id})">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteProduct(${product.id})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+        
+        function getCategoryName(category) {
+            const categories = {
+                'electronics': 'Điện tử',
+                'clothing': 'Quần áo',
+                'books': 'Sách',
+                'food': 'Thực phẩm',
+                'other': 'Khác'
+            };
+            return categories[category] || category;
+        }
+        
+        function formatPrice(price) {
+            if (price === 0) return 'Chưa có';
+            return new Intl.NumberFormat('vi-VN', {
+                style: 'currency',
+                currency: 'VND'
+            }).format(price);
+        }
+        
+        function saveProducts() {
+            localStorage.setItem('products', JSON.stringify(products));
+        }
+        
+        // Add some sample products if none exist
+        if (products.length === 0) {
+            products = [
+                {
+                    id: 1,
+                    code: 'SP001',
+                    name: 'Laptop Dell Inspiron',
+                    category: 'electronics',
+                    unit: 'Cái',
+                    quantity: 5,
+                    importPrice: 15000000,
+                    description: 'Laptop Dell Inspiron 15 inch, Core i5',
+                    status: 'active',
+                    createdAt: new Date().toISOString()
+                },
+                {
+                    id: 2,
+                    code: 'SP002',
+                    name: 'Áo thun nam',
+                    category: 'clothing',
+                    unit: 'Cái',
+                    quantity: 50,
+                    importPrice: 150000,
+                    description: 'Áo thun nam cotton 100%',
+                    status: 'active',
+                    createdAt: new Date().toISOString()
+                }
+            ];
+            saveProducts();
+        }
+    </script>
+</body>
+</html>

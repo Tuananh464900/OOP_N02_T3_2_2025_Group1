@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý Kho - Warehouse Management</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .warehouse-form {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 24px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #333;
+        }
+        
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.2s;
+        }
+        
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+        
+        .btn:hover {
+            background: #2980b9;
+        }
+        
+        .btn-secondary {
+            background: #95a5a6;
+        }
+        
+        .btn-secondary:hover {
+            background: #7f8c8d;
+        }
+        
+        .btn-success {
+            background: #2ecc71;
+        }
+        
+        .btn-success:hover {
+            background: #27ae60;
+        }
+        
+        .btn-danger {
+            background: #e74c3c;
+        }
+        
+        .btn-danger:hover {
+            background: #c0392b;
+        }
+        
+        .warehouse-list {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .warehouse-list-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .warehouse-list-header h3 {
+            margin: 0;
+            color: #333;
+        }
+        
+        .search-box {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .search-box input {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            width: 250px;
+        }
+        
+        .warehouse-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .warehouse-table th {
+            background: #f8f9fa;
+            padding: 16px 24px;
+            text-align: left;
+            font-weight: 600;
+            color: #333;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .warehouse-table td {
+            padding: 16px 24px;
+            border-bottom: 1px solid #eee;
+            color: #666;
+        }
+        
+        .warehouse-table tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+        
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .status-active {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status-inactive {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .status-maintenance {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        .warehouse-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            text-align: center;
+            border-left: 4px solid;
+        }
+        
+        .stat-card.blue {
+            border-left-color: #3498db;
+        }
+        
+        .stat-card.green {
+            border-left-color: #2ecc71;
+        }
+        
+        .stat-card.orange {
+            border-left-color: #f39c12;
+        }
+        
+        .stat-card.red {
+            border-left-color: #e74c3c;
+        }
+        
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            color: #666;
+            font-weight: 500;
+        }
+        
+        .capacity-bar {
+            width: 100%;
+            height: 8px;
+            background: #eee;
+            border-radius: 4px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+        
+        .capacity-fill {
+            height: 100%;
+            background: #3498db;
+            transition: width 0.3s ease;
+        }
+        
+        .capacity-fill.high {
+            background: #2ecc71;
+        }
+        
+        .capacity-fill.medium {
+            background: #f39c12;
+        }
+        
+        .capacity-fill.low {
+            background: #e74c3c;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        
+        .modal-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 24px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .modal-header h3 {
+            margin: 0;
+            color: #333;
+        }
+        
+        .close {
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .close:hover {
+            color: #333;
+        }
+        
+        .warehouse-details {
+            background: #f8f9fa;
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        
+        .detail-row:last-child {
+            margin-bottom: 0;
+        }
+        
+        .detail-label {
+            font-weight: 500;
+            color: #333;
+        }
+        
+        .detail-value {
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Header Bar -->
+    <header class="header">
+        <div class="header-left">
+            <i class="fas fa-eye"></i>
+            <i class="fas fa-code"></i>
+            <span class="version">v5 Latest</span>
+            <i class="fas fa-sync-alt"></i>
+            <div class="copy-dropdown">
+                <span>Copy <i class="fas fa-chevron-down"></i></span>
+            </div>
+            <button class="publish-btn">
+                <i class="fas fa-paper-plane"></i> Publish
+            </button>
+            <i class="fas fa-times"></i>
+        </div>
+        <div class="header-right">
+            <i class="fas fa-search"></i>
+            <i class="fas fa-star"></i>
+            <div class="notification-bell">
+                <i class="fas fa-bell"></i>
+                <span class="notification-count">1</span>
+            </div>
+            <i class="fas fa-download"></i>
+            <i class="fas fa-square"></i>
+            <i class="fas fa-th"></i>
+            <i class="fas fa-user"></i>
+            <i class="fas fa-bars"></i>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Left Navigation Sidebar -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <h2>Quản lý Kho</h2>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <i class="fas fa-file-alt"></i>
+                    <span>Quản lý Kho</span>
+                </li>
+                <li class="nav-item">
+                    <i class="fas fa-chart-bar"></i>
+                    <span><a href="index.html" style="color: white; text-decoration: none;">Tổng quan</a></span>
+                </li>
+                <li class="nav-item">
+                    <i class="fas fa-cube"></i>
+                    <span><a href="products.html" style="color: white; text-decoration: none;">Sản phẩm</a></span>
+                </li>
+                <li class="nav-item">
+                    <i class="fas fa-clipboard-list"></i>
+                    <span><a href="inventory.html" style="color: white; text-decoration: none;">Tồn kho</a></span>
+                </li>
+                <li class="nav-item active">
+                    <i class="fas fa-warehouse"></i>
+                    <span>Quản lý Kho</span>
+                </li>
+                <li class="nav-item">
+                    <i class="fas fa-arrow-up"></i>
+                    <span>Nhập kho</span>
+                </li>
+                <li class="nav-item">
+                    <i class="fas fa-arrow-down"></i>
+                    <span>Xuất kho</span>
+                </li>
+                <li class="nav-item">
+                    <i class="fas fa-file-alt"></i>
+                    <span>Báo cáo</span>
+                </li>
+                <li class="nav-item">
+                    <i class="fas fa-users"></i>
+                    <span>Người dùng</span>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <div class="dashboard">
+                <h1 class="page-header">Quản lý Kho</h1>
+                
+                <!-- Warehouse Statistics -->
+                <div class="warehouse-stats">
+                    <div class="stat-card blue">
+                        <div class="stat-value" id="totalWarehouses">0</div>
+                        <div class="stat-label">Tổng số kho</div>
+                    </div>
+                    <div class="stat-card green">
+                        <div class="stat-value" id="activeWarehouses">0</div>
+                        <div class="stat-label">Kho hoạt động</div>
+                    </div>
+                    <div class="stat-card orange">
+                        <div class="stat-value" id="totalCapacity">0</div>
+                        <div class="stat-label">Tổng sức chứa</div>
+                    </div>
+                    <div class="stat-card red">
+                        <div class="stat-value" id="usedCapacity">0</div>
+                        <div class="stat-label">Đã sử dụng</div>
+                    </div>
+                </div>
+                
+                <!-- Warehouse Form -->
+                <div class="warehouse-form" id="warehouseForm">
+                    <h3><i class="fas fa-plus-circle"></i> Thêm Kho mới</h3>
+                    <form id="addWarehouseForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="warehouseCode">Mã kho *</label>
+                                <input type="text" id="warehouseCode" name="warehouseCode" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="warehouseName">Tên kho *</label>
+                                <input type="text" id="warehouseName" name="warehouseName" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="location">Địa điểm</label>
+                                <input type="text" id="location" name="location" placeholder="Địa chỉ kho...">
+                            </div>
+                            <div class="form-group">
+                                <label for="capacity">Sức chứa</label>
+                                <input type="number" id="capacity" name="capacity" min="1" placeholder="Số lượng sản phẩm tối đa">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="manager">Người quản lý</label>
+                                <input type="text" id="manager" name="manager" placeholder="Tên người quản lý">
+                            </div>
+                            <div class="form-group">
+                                <label for="status">Trạng thái</label>
+                                <select id="status" name="status">
+                                    <option value="active">Hoạt động</option>
+                                    <option value="inactive">Không hoạt động</option>
+                                    <option value="maintenance">Bảo trì</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="description">Mô tả</label>
+                            <textarea id="description" name="description" rows="3" placeholder="Mô tả chi tiết về kho..."></textarea>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-secondary" onclick="resetForm()">Làm mới</button>
+                            <button type="submit" class="btn btn-success">Thêm kho</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Warehouse List -->
+                <div class="warehouse-list">
+                    <div class="warehouse-list-header">
+                        <h3><i class="fas fa-list"></i> Danh sách Kho</h3>
+                        <div class="search-box">
+                            <input type="text" id="searchWarehouse" placeholder="Tìm kiếm kho...">
+                            <button class="btn" onclick="searchWarehouses()">
+                                <i class="fas fa-search"></i> Tìm kiếm
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <table class="warehouse-table">
+                        <thead>
+                            <tr>
+                                <th>Mã kho</th>
+                                <th>Tên kho</th>
+                                <th>Địa điểm</th>
+                                <th>Sức chứa</th>
+                                <th>Đã sử dụng</th>
+                                <th>Trạng thái</th>
+                                <th>Người quản lý</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody id="warehouseTableBody">
+                            <!-- Warehouses will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Warehouse Details Modal -->
+    <div id="warehouseModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Chi tiết Kho</h3>
+                <span class="close" onclick="closeModal()">&times;</span>
+            </div>
+            <div id="warehouseDetails">
+                <!-- Warehouse details will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Warehouse Management JavaScript
+        let warehouses = JSON.parse(localStorage.getItem('warehouses')) || [];
+        let currentWarehouseId = null;
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            loadWarehouses();
+            setupWarehouseForm();
+        });
+        
+        function setupWarehouseForm() {
+            const form = document.getElementById('addWarehouseForm');
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                addWarehouse();
+            });
+        }
+        
+        function addWarehouse() {
+            const formData = new FormData(document.getElementById('addWarehouseForm'));
+            const warehouse = {
+                id: Date.now(),
+                code: formData.get('warehouseCode'),
+                name: formData.get('warehouseName'),
+                location: formData.get('location'),
+                capacity: parseInt(formData.get('capacity')) || 0,
+                usedCapacity: 0,
+                manager: formData.get('manager'),
+                status: formData.get('status'),
+                description: formData.get('description'),
+                createdAt: new Date().toISOString()
+            };
+            
+            warehouses.push(warehouse);
+            saveWarehouses();
+            loadWarehouses();
+            resetForm();
+            
+            showNotification('Kho đã được thêm thành công!', 'success');
+        }
+        
+        function loadWarehouses() {
+            updateStatistics();
+            displayWarehouses(warehouses);
+        }
+        
+        function updateStatistics() {
+            const totalWarehouses = warehouses.length;
+            const activeWarehouses = warehouses.filter(w => w.status === 'active').length;
+            const totalCapacity = warehouses.reduce((sum, w) => sum + w.capacity, 0);
+            const usedCapacity = warehouses.reduce((sum, w) => sum + w.usedCapacity, 0);
+            
+            document.getElementById('totalWarehouses').textContent = totalWarehouses;
+            document.getElementById('activeWarehouses').textContent = activeWarehouses;
+            document.getElementById('totalCapacity').textContent = totalCapacity;
+            document.getElementById('usedCapacity').textContent = usedCapacity;
+        }
+        
+        function displayWarehouses(items) {
+            const tbody = document.getElementById('warehouseTableBody');
+            tbody.innerHTML = '';
+            
+            if (items.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 40px; color: #666;">Chưa có kho nào. Hãy thêm kho đầu tiên!</td></tr>';
+                return;
+            }
+            
+            items.forEach(warehouse => {
+                const usagePercentage = warehouse.capacity > 0 ? (warehouse.usedCapacity / warehouse.capacity) * 100 : 0;
+                const capacityClass = getCapacityClass(usagePercentage);
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><strong>${warehouse.code}</strong></td>
+                    <td>${warehouse.name}</td>
+                    <td>${warehouse.location || 'Chưa có'}</td>
+                    <td>${warehouse.capacity || 'Không giới hạn'}</td>
+                    <td>
+                        ${warehouse.capacity > 0 ? warehouse.usedCapacity : 'N/A'}
+                        ${warehouse.capacity > 0 ? `<div class="capacity-bar"><div class="capacity-fill ${capacityClass}" style="width: ${Math.min(usagePercentage, 100)}%"></div></div>` : ''}
+                    </td>
+                    <td>
+                        <span class="status-badge status-${warehouse.status}">
+                            ${getStatusText(warehouse.status)}
+                        </span>
+                    </td>
+                    <td>${warehouse.manager || 'Chưa có'}</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn btn-sm" onclick="viewWarehouseDetails(${warehouse.id})">
+                                <i class="fas fa-eye"></i> Xem
+                            </button>
+                            <button class="btn btn-sm" onclick="editWarehouse(${warehouse.id})">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteWarehouse(${warehouse.id})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+        
+        function getCapacityClass(percentage) {
+            if (percentage >= 80) return 'low';
+            if (percentage >= 60) return 'medium';
+            return 'high';
+        }
+        
+        function getStatusText(status) {
+            const statusTexts = {
+                'active': 'Hoạt động',
+                'inactive': 'Không hoạt động',
+                'maintenance': 'Bảo trì'
+            };
+            return statusTexts[status] || status;
+        }
+        
+        function editWarehouse(id) {
+            const warehouse = warehouses.find(w => w.id === id);
+            if (warehouse) {
+                // Populate form for editing
+                document.getElementById('warehouseCode').value = warehouse.code;
+                document.getElementById('warehouseName').value = warehouse.name;
+                document.getElementById('location').value = warehouse.location;
+                document.getElementById('capacity').value = warehouse.capacity;
+                document.getElementById('manager').value = warehouse.manager;
+                document.getElementById('status').value = warehouse.status;
+                document.getElementById('description').value = warehouse.description;
+                
+                // Change form to edit mode
+                document.querySelector('.warehouse-form h3').innerHTML = '<i class="fas fa-edit"></i> Chỉnh sửa Kho';
+                document.querySelector('.form-actions .btn-success').textContent = 'Cập nhật';
+                
+                // Store editing warehouse ID
+                document.getElementById('addWarehouseForm').dataset.editingId = id;
+            }
+        }
+        
+        function deleteWarehouse(id) {
+            if (confirm('Bạn có chắc chắn muốn xóa kho này?')) {
+                warehouses = warehouses.filter(w => w.id !== id);
+                saveWarehouses();
+                loadWarehouses();
+                showNotification('Kho đã được xóa!', 'success');
+            }
+        }
+        
+        function resetForm() {
+            document.getElementById('addWarehouseForm').reset();
+            document.querySelector('.warehouse-form h3').innerHTML = '<i class="fas fa-plus-circle"></i> Thêm Kho mới';
+            document.querySelector('.form-actions .btn-success').textContent = 'Thêm kho';
+            delete document.getElementById('addWarehouseForm').dataset.editingId;
+        }
+        
+        function searchWarehouses() {
+            const searchTerm = document.getElementById('searchWarehouse').value.toLowerCase();
+            const filteredWarehouses = warehouses.filter(warehouse => 
+                warehouse.name.toLowerCase().includes(searchTerm) ||
+                warehouse.code.toLowerCase().includes(searchTerm) ||
+                (warehouse.location && warehouse.location.toLowerCase().includes(searchTerm)) ||
+                (warehouse.manager && warehouse.manager.toLowerCase().includes(searchTerm))
+            );
+            
+            displayWarehouses(filteredWarehouses);
+        }
+        
+        function viewWarehouseDetails(id) {
+            const warehouse = warehouses.find(w => w.id === id);
+            if (warehouse) {
+                const detailsDiv = document.getElementById('warehouseDetails');
+                const usagePercentage = warehouse.capacity > 0 ? (warehouse.usedCapacity / warehouse.capacity) * 100 : 0;
+                
+                detailsDiv.innerHTML = `
+                    <div class="warehouse-details">
+                        <div class="detail-row">
+                            <span class="detail-label">Mã kho:</span>
+                            <span class="detail-value">${warehouse.code}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Tên kho:</span>
+                            <span class="detail-value">${warehouse.name}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Địa điểm:</span>
+                            <span class="detail-value">${warehouse.location || 'Chưa có'}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Sức chứa:</span>
+                            <span class="detail-value">${warehouse.capacity || 'Không giới hạn'}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Đã sử dụng:</span>
+                            <span class="detail-value">${warehouse.usedCapacity}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Tỷ lệ sử dụng:</span>
+                            <span class="detail-value">${warehouse.capacity > 0 ? usagePercentage.toFixed(1) + '%' : 'N/A'}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Người quản lý:</span>
+                            <span class="detail-value">${warehouse.manager || 'Chưa có'}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Trạng thái:</span>
+                            <span class="detail-value">
+                                <span class="status-badge status-${warehouse.status}">
+                                    ${getStatusText(warehouse.status)}
+                                </span>
+                            </span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Ngày tạo:</span>
+                            <span class="detail-value">${new Date(warehouse.createdAt).toLocaleDateString('vi-VN')}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Mô tả:</span>
+                            <span class="detail-value">${warehouse.description || 'Không có mô tả'}</span>
+                        </div>
+                    </div>
+                `;
+                
+                document.getElementById('warehouseModal').style.display = 'block';
+            }
+        }
+        
+        function closeModal() {
+            document.getElementById('warehouseModal').style.display = 'none';
+        }
+        
+        function saveWarehouses() {
+            localStorage.setItem('warehouses', JSON.stringify(warehouses));
+        }
+        
+        // Add some sample warehouses if none exist
+        if (warehouses.length === 0) {
+            warehouses = [
+                {
+                    id: 1,
+                    code: 'WH001',
+                    name: 'Kho chính Hà Nội',
+                    location: '123 Đường ABC, Quận 1, Hà Nội',
+                    capacity: 1000,
+                    usedCapacity: 450,
+                    manager: 'Nguyễn Văn A',
+                    status: 'active',
+                    description: 'Kho chính của công ty tại Hà Nội',
+                    createdAt: new Date().toISOString()
+                },
+                {
+                    id: 2,
+                    code: 'WH002',
+                    name: 'Kho phụ TP.HCM',
+                    location: '456 Đường XYZ, Quận 7, TP.HCM',
+                    capacity: 800,
+                    usedCapacity: 320,
+                    manager: 'Trần Thị B',
+                    status: 'active',
+                    description: 'Kho phụ tại TP.HCM',
+                    createdAt: new Date().toISOString()
+                }
+            ];
+            saveWarehouses();
+        }
+        
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('warehouseModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+    </script>
+</body>
+</html>

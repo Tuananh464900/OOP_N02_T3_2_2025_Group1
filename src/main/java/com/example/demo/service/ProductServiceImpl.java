@@ -11,6 +11,10 @@ import java.util.List;
 
 @Service
 public class ProductServiceImpl implements ProductService {
+    
+    @Autowired
+    private ProductRepository productRepository;
+    
     @Override
     public Page<Product> findAll(Pageable pageable) {
         return productRepository.findAll(pageable);
@@ -20,10 +24,6 @@ public class ProductServiceImpl implements ProductService {
     public Page<Product> findByName(String q, Pageable pageable) {
         return productRepository.findByNameContainingIgnoreCase(q, pageable);
     }
-
-
-    @Autowired
-    private ProductRepository productRepository;
 
     @Override
     public List<Product> getAllProducts() {

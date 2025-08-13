@@ -53,7 +53,7 @@ Maven hoặc IDE hỗ trợ (IntelliJ, Visual Studio Code…)
 
 ⚙️ Cài đặt & Chạy
 
-git clone https://github.com/Tuananh464900/OOP_N02_T3_2_2025_Group10.git
+git clone https://github.com/Tuananh464900/OOP_N02_T3_2_2025_Group1
 
 🗂️ Cấu trúc thư mục
 

@@ -35,8 +35,17 @@ public class DashboardController {
         model.addAttribute("todayReceipt", todayReceipt);
         model.addAttribute("todayIssue", todayIssue);
 
-        // 5 báº£n ghi gáº§n nháº¥t
+        // Lấy sản phẩm sắp hết hàng (tồn kho <= minStock)
+        var lowStockProducts = productRepository.findProductsWithLowStock();
+        model.addAttribute("lowStockProducts", lowStockProducts);
+
+        // 5 bản ghi gần nhất
         model.addAttribute("recent", transactionRepository.findTop5ByOrderByTransactionDateDescIdDesc());
+        
+        // Set title and page info
+        model.addAttribute("title", "Dashboard - Quản lý Kho");
+        model.addAttribute("pageTitle", "Tổng quan");
+        
         return "dashboard";
     }
 }

@@ -1,44 +1,214 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8"/>
-  <title>Danh sách giao dịch</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title th:text="${title} ?: 'Warehouse App'">Warehouse App</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    .kpi-card{border-radius:14px}
+    .kpi-dot{width:18px;height:18px;border-radius:50%}
+    .card-soft{border:1px solid rgba(0,0,0,.05); box-shadow:0 4px 18px rgba(0,0,0,.06); border-radius:16px}
+    .sidebar-gradient {
+      background: linear-gradient(180deg,#0f172a,#0b1223 60%,#0a1121);
+    }
+    .nav-link:hover {
+      background-color: rgba(255,255,255,0.1) !important;
+      border-radius: 8px;
+    }
+    .nav-link.active {
+      background-color: rgba(13,110,253,0.2) !important;
+      border-radius: 8px;
+    }
+  </style>
 </head>
 <body class="bg-light">
-<div class="container mt-5">
-  <h2 class="mb-4"><span class="badge bg-warning text-dark">🔁</span> Giao dịch Nhập/Xuất</h2>
 
-  <a class="btn btn-success mb-3" th:href="@{/inventory/create}">+ Thêm giao dịch</a>
+<div class="d-flex">
+  <!-- Sidebar -->
+  <aside class="flex-shrink-0 p-3 text-white sidebar-gradient" style="width: 260px; min-height:100vh;">
+    <a href="/dashboard" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+      <span class="fs-5">🏬 Quản lý Kho</span>
+    </a>
+    <hr>
+    <ul class="nav nav-pills flex-column mb-auto gap-1">
+      <li class="nav-item">
+        <a href="/dashboard" class="nav-link text-white">
+          <i class="bi bi-speedometer2 me-2"></i>Tổng quan
+        </a>
+      </li>
+      <li>
+        <a href="/products" class="nav-link text-white">
+          <i class="bi bi-box me-2"></i>Sản phẩm
+        </a>
+      </li>
+      <li>
+        <a href="/warehouses" class="nav-link text-white">
+          <i class="bi bi-building me-2"></i>Kho
+        </a>
+      </li>
+      <li>
+        <a href="/inventorytransactions" class="nav-link text-white active">
+          <i class="bi bi-journal-text me-2"></i>Tồn kho
+        </a>
+      </li>
+      <li>
+        <a href="/inventorytransactions/create?transactionType=RECEIPT" class="nav-link text-white">
+          <i class="bi bi-arrow-down-circle me-2"></i>Nhập kho
+        </a>
+      </li>
+      <li>
+        <a href="/inventorytransactions/create?transactionType=ISSUE" class="nav-link text-white">
+          <i class="bi bi-arrow-up-circle me-2"></i>Xuất kho
+        </a>
+      </li>
+      <li>
+        <a href="#" class="nav-link text-white disabled">
+          <i class="bi bi-graph-up me-2"></i>Báo cáo
+        </a>
+      </li>
+      <li>
+        <a href="#" class="nav-link text-white disabled">
+          <i class="bi bi-person me-2"></i>Người dùng
+        </a>
+      </li>
+    </ul>
+    <hr>
+    <div class="small text-secondary">v1.0 • Spring Boot</div>
+  </aside>
 
-  <table class="table table-bordered table-hover">
-    <thead class="table-secondary">
-      <tr>
-        <th>ID</th>
-        <th>Sản phẩm</th>
-        <th>Kho</th>
-        <th>Số lượng</th>
-        <th>Loại</th>
-        <th>Thời gian</th>
-        <th>Hành động</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr th:each="t : ${transactions}">
-        <td th:text="${t.id}">1</td>
-        <td th:text="${t.product.name}">Sản phẩm</td>
-        <td th:text="${t.warehouse.name}">Kho</td>
-        <td th:text="${t.quantity}">10</td>
-        <td th:text="${t.type}">IN</td>
-        <td th:text="${#dates.format(t.timestamp, 'dd-MM-yyyy HH:mm')}">01-08-2025</td>
-        <td>
-          <a class="btn btn-sm btn-warning" th:href="@{'/inventory/edit/' + ${t.id}}">Sửa</a>
-          <a class="btn btn-sm btn-danger" th:href="@{'/inventory/delete/' + ${t.id}}"
-             onclick="return confirm('Bạn có chắc muốn xóa không?')">Xóa</a>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <!-- Main Content -->
+  <main class="flex-grow-1 p-4">
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h4 class="mb-0">Giao dịch Nhập/Xuất</h4>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-0">
+          <li class="breadcrumb-item"><a href="/dashboard">Trang chủ</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Giao dịch</li>
+        </ol>
+      </nav>
+    </div>
+
+    <!-- Alert Messages -->
+    <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
+      <i class="bi bi-check-circle me-2"></i>
+      <span th:text="${success}"></span>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+      <i class="bi bi-exclamation-circle me-2"></i>
+      <span th:text="${error}"></span>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="d-flex gap-2 mb-3">
+      <a class="btn btn-success" th:href="@{/inventory/create}">
+        <i class="bi bi-plus-circle me-1"></i>Thêm giao dịch
+      </a>
+      <a class="btn btn-primary" th:href="@{/inventorytransactions/create?transactionType=RECEIPT}">
+        <i class="bi bi-arrow-down-circle me-1"></i>Nhập kho
+      </a>
+      <a class="btn btn-warning" th:href="@{/inventorytransactions/create?transactionType=ISSUE}">
+        <i class="bi bi-arrow-up-circle me-1"></i>Xuất kho
+      </a>
+    </div>
+
+    <!-- Transactions Table -->
+    <div class="card card-soft">
+      <div class="card-header bg-white border-0">
+        <h5 class="mb-0">
+          <i class="bi bi-list-ul me-2"></i>Danh sách giao dịch
+        </h5>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-hover mb-0">
+          <thead class="table-light">
+            <tr>
+              <th>ID</th>
+              <th>Sản phẩm</th>
+              <th>Kho</th>
+              <th>Số lượng</th>
+              <th>Loại</th>
+              <th>Thời gian</th>
+              <th>Hành động</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="t : ${transactions}" th:if="${transactions != null and !transactions.isEmpty()}">
+              <td th:text="${t.id}">1</td>
+              <td th:text="${t.product.name}">Sản phẩm</td>
+              <td th:text="${t.warehouse.name}">Kho</td>
+              <td th:text="${t.quantity}">10</td>
+              <td>
+                <span th:if="${t.type == 'IN'}" class="badge bg-success">
+                  <i class="bi bi-arrow-down me-1"></i>Nhập
+                </span>
+                <span th:if="${t.type == 'OUT'}" class="badge bg-danger">
+                  <i class="bi bi-arrow-up me-1"></i>Xuất
+                </span>
+              </td>
+              <td th:text="${#dates.format(t.timestamp, 'dd/MM/yyyy HH:mm')}">01/08/2025</td>
+              <td>
+                <a class="btn btn-sm btn-primary" th:href="@{'/inventory/edit/' + ${t.id}}">
+                  <i class="bi bi-pencil me-1"></i>Sửa
+                </a>
+                <form th:action="@{'/inventory/delete/' + ${t.id}}" method="post" th:id="${'tdel'+t.id}" class="d-inline">
+                  <button type="button" class="btn btn-sm btn-danger" th:onclick="${'confirmDelete(\'tdel' + t.id + '\')'}">
+                    <i class="bi bi-trash me-1"></i>Xóa
+                  </button>
+                </form>
+              </td>
+            </tr>
+            <tr th:if="${transactions == null or transactions.isEmpty()}">
+              <td colspan="7" class="text-center text-muted py-4">
+                <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+                Chưa có giao dịch nào
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // Confirm delete function
+  function confirmDelete(formId) {
+    if (confirm('Bạn có chắc chắn muốn xóa không? Hành động này không thể hoàn tác.')) {
+      document.getElementById(formId).submit();
+    }
+  }
+
+  // Auto hide alerts after 5 seconds
+  document.addEventListener('DOMContentLoaded', function() {
+    const alerts = document.querySelectorAll('.alert:not(.alert-permanent)');
+    alerts.forEach(function(alert) {
+      setTimeout(function() {
+        const bsAlert = new bootstrap.Alert(alert);
+        bsAlert.close();
+      }, 5000);
+    });
+  });
+
+  // Add loading state to buttons
+  document.addEventListener('DOMContentLoaded', function() {
+    const forms = document.querySelectorAll('form');
+    forms.forEach(function(form) {
+      form.addEventListener('submit', function() {
+        const submitBtn = form.querySelector('button[type="submit"]');
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status"></span>Đang xử lý...';
+        }
+      });
+    });
+  });
+</script>
+
 </body>
 </html>

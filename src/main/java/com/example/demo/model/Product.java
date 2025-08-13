@@ -12,28 +12,30 @@ public class Product {
     private Long id;
 
     @Column(nullable = false)
-    @NotBlank(message = "TÃªn sáº£n pháº©m khÃ´ng Ä‘Æ°á»£c Ä‘á»ƒ trá»‘ng")
-    @Size(min=2,max=150)
+    @NotBlank(message = "Tên sản phẩm không được để trống")
+    @Size(min=2, max=150, message = "Tên sản phẩm phải từ 2-150 ký tự")
     private String name;
 
     private String category;
 
     private String description;
 
+    @Min(value = 0, message = "Giá nhập phải >= 0")
     private double defaultPrice;
 
+    @Min(value = 0, message = "Giá bán phải >= 0")
     private double sellPrice;
 
     private String unit;
 
-    @Min(0)
+    @Min(value = 0, message = "Tồn tối thiểu phải >= 0")
     private int minStock;
 
-    @Min(0)
+    @Min(value = 0, message = "Tồn tối đa phải >= 0")
     private int maxStock;
 
-    @Min(0)
-    private int quantity; // náº¿u cáº§n
+    @Min(value = 0, message = "Số lượng phải >= 0")
+    private int quantity;
 
     // Constructors
     public Product() {
@@ -44,7 +46,7 @@ public class Product {
         this.quantity = quantity;
         this.defaultPrice = price;
         this.sellPrice = price;
-        this.unit = "cÃ¡i";
+        this.unit = "cái";
         this.minStock = 0;
         this.maxStock = 1000;
     }

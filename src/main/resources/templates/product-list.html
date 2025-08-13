@@ -80,8 +80,8 @@
         <td th:text="${p.quantity}"></td>
         <td class="text-end">
           <a class="btn btn-sm btn-primary" th:href="@{'/products/edit/' + ${p.id}}">Sửa</a>
-          <form th:action="@{'/products/delete/' + ${p.id}}" method="post" th:id="${'pdel'+p.id}" class="d-inline">
-            <button type="button" class="btn btn-sm btn-danger" th:onclick="${'confirmDelete(\'pdel' + p.id + '\')'}">Xóa</button>
+          <form th:action="@{'/products/delete/' + ${p.id}}" method="post" th:id="|pdel${p.id}|" class="d-inline">
+            <button type="submit" class="btn btn-sm btn-danger">Xóa</button>
           </form>
         </td>
       </tr>

@@ -1,235 +1,47 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title th:text="${title} ?: 'Warehouse App'">Warehouse App</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
-  <style>
-    .kpi-card{border-radius:14px}
-    .kpi-dot{width:18px;height:18px;border-radius:50%}
-    .card-soft{border:1px solid rgba(0,0,0,.05); box-shadow:0 4px 18px rgba(0,0,0,.06); border-radius:16px}
-    .sidebar-gradient {
-      background: linear-gradient(180deg,#0f172a,#0b1223 60%,#0a1121);
-    }
-    .nav-link:hover {
-      background-color: rgba(255,255,255,0.1) !important;
-      border-radius: 8px;
-    }
-    .nav-link.active {
-      background-color: rgba(13,110,253,0.2) !important;
-      border-radius: 8px;
-    }
-  </style>
+  <meta charset="UTF-8"/>
+  <title>Thêm / Sửa Giao dịch</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
 </head>
-<body class="bg-light">
+<body>
+<div class="container mt-4">
+  <h2 th:text="${transaction.id} != null ? 'Chỉnh sửa giao dịch' : 'Thêm giao dịch mới'"></h2>
 
-<div class="d-flex">
-  <!-- Sidebar -->
-  <aside class="flex-shrink-0 p-3 text-white sidebar-gradient" style="width: 260px; min-height:100vh;">
-    <a href="/dashboard" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-      <span class="fs-5">🏬 Quản lý Kho</span>
-    </a>
-    <hr>
-    <ul class="nav nav-pills flex-column mb-auto gap-1">
-      <li class="nav-item">
-        <a href="/dashboard" class="nav-link text-white">
-          <i class="bi bi-speedometer2 me-2"></i>Tổng quan
-        </a>
-      </li>
-      <li>
-        <a href="/products" class="nav-link text-white">
-          <i class="bi bi-box me-2"></i>Sản phẩm
-        </a>
-      </li>
-      <li>
-        <a href="/warehouses" class="nav-link text-white">
-          <i class="bi bi-building me-2"></i>Kho
-        </a>
-      </li>
-      <li>
-        <a href="/inventorytransactions" class="nav-link text-white active">
-          <i class="bi bi-journal-text me-2"></i>Tồn kho
-        </a>
-      </li>
-      <li>
-        <a href="/inventorytransactions/create?transactionType=RECEIPT" class="nav-link text-white">
-          <i class="bi bi-arrow-down-circle me-2"></i>Nhập kho
-        </a>
-      </li>
-      <li>
-        <a href="/inventorytransactions/create?transactionType=ISSUE" class="nav-link text-white">
-          <i class="bi bi-arrow-up-circle me-2"></i>Xuất kho
-        </a>
-      </li>
-      <li>
-        <a href="#" class="nav-link text-white disabled">
-          <i class="bi bi-graph-up me-2"></i>Báo cáo
-        </a>
-      </li>
-      <li>
-        <a href="#" class="nav-link text-white disabled">
-          <i class="bi bi-person me-2"></i>Người dùng
-        </a>
-      </li>
-    </ul>
-    <hr>
-    <div class="small text-secondary">v1.0 • Spring Boot</div>
-  </aside>
+  <form th:action="@{/inventory/save}" th:object="${transaction}" method="post">
+    <input type="hidden" th:field="*{id}" />
 
-  <!-- Main Content -->
-  <main class="flex-grow-1 p-4">
-    <!-- Page Header -->
-    <div class="d-flex justify-content-between align-items-center mb-3">
-      <h4 class="mb-0" th:text="${transaction.id} != null ? 'Chỉnh sửa giao dịch' : 'Thêm giao dịch mới'">Thêm giao dịch</h4>
-      <nav aria-label="breadcrumb">
-        <ol class="breadcrumb mb-0">
-          <li class="breadcrumb-item"><a href="/dashboard">Trang chủ</a></li>
-          <li class="breadcrumb-item"><a href="/inventory">Giao dịch</a></li>
-          <li class="breadcrumb-item active" aria-current="page" th:text="${transaction.id} != null ? 'Sửa' : 'Thêm'">Thêm</li>
-        </ol>
-      </nav>
+    <div class="mb-3">
+      <label class="form-label">Sản phẩm:</label>
+      <select class="form-select" th:field="*{product.id}">
+        <option th:each="p : ${products}" th:value="${p.id}" th:text="${p.name}"></option>
+      </select>
     </div>
 
-    <!-- Alert Messages -->
-    <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
-      <i class="bi bi-check-circle me-2"></i>
-      <span th:text="${success}"></span>
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-    <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
-      <i class="bi bi-exclamation-circle me-2"></i>
-      <span th:text="${error}"></span>
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    <div class="mb-3">
+      <label class="form-label">Kho:</label>
+      <select class="form-select" th:field="*{warehouse.id}">
+        <option th:each="w : ${warehouses}" th:value="${w.id}" th:text="${w.name}"></option>
+      </select>
     </div>
 
-    <!-- Form -->
-    <div class="card card-soft">
-      <div class="card-header bg-white border-0">
-        <h5 class="mb-0">
-          <i class="bi bi-journal-plus me-2"></i>
-          <span th:text="${transaction.id} != null ? 'Chỉnh sửa giao dịch' : 'Thêm giao dịch mới'">Thêm giao dịch mới</span>
-        </h5>
-      </div>
-      <div class="card-body">
-        <form th:action="@{/inventory/save}" th:object="${transaction}" method="post">
-          <input type="hidden" th:field="*{id}" />
-
-          <div class="row g-3">
-            <div class="col-md-6">
-              <label class="form-label">
-                <i class="bi bi-box me-1"></i>Sản phẩm
-              </label>
-              <select class="form-select" th:field="*{product.id}" required>
-                <option value="">-- Chọn sản phẩm --</option>
-                <option th:each="p : ${products}" th:value="${p.id}" th:text="${p.name}"></option>
-              </select>
-            </div>
-
-            <div class="col-md-6">
-              <label class="form-label">
-                <i class="bi bi-building me-1"></i>Kho
-              </label>
-              <select class="form-select" th:field="*{warehouse.id}" required>
-                <option value="">-- Chọn kho --</option>
-                <option th:each="w : ${warehouses}" th:value="${w.id}" th:text="${w.name}"></option>
-              </select>
-            </div>
-
-            <div class="col-md-4">
-              <label class="form-label">
-                <i class="bi bi-hash me-1"></i>Số lượng
-              </label>
-              <input type="number" class="form-control" th:field="*{quantity}" required min="1" />
-              <div class="form-text">Nhập số lượng muốn giao dịch</div>
-            </div>
-
-            <div class="col-md-4">
-              <label class="form-label">
-                <i class="bi bi-arrow-left-right me-1"></i>Loại giao dịch
-              </label>
-              <select class="form-select" th:field="*{type}" required>
-                <option value="">-- Chọn loại --</option>
-                <option value="IN">
-                  <i class="bi bi-arrow-down me-1"></i>Nhập kho
-                </option>
-                <option value="OUT">
-                  <i class="bi bi-arrow-up me-1"></i>Xuất kho
-                </option>
-              </select>
-            </div>
-
-            <div class="col-md-4">
-              <label class="form-label">
-                <i class="bi bi-calendar me-1"></i>Ngày giao dịch
-              </label>
-              <input type="datetime-local" class="form-control" th:field="*{timestamp}" />
-              <div class="form-text">Để trống sẽ dùng thời gian hiện tại</div>
-            </div>
-
-            <div class="col-12">
-              <label class="form-label">
-                <i class="bi bi-journal-text me-1"></i>Ghi chú
-              </label>
-              <textarea class="form-control" th:field="*{notes}" rows="3" placeholder="Ghi chú về giao dịch (tùy chọn)"></textarea>
-            </div>
-          </div>
-
-          <div class="mt-4 d-flex gap-2">
-            <button type="submit" class="btn btn-success">
-              <i class="bi bi-check-circle me-1"></i>Lưu
-            </button>
-            <a th:href="@{/inventory}" class="btn btn-secondary">
-              <i class="bi bi-x-circle me-1"></i>Hủy
-            </a>
-            <a th:href="@{/inventorytransactions}" class="btn btn-outline-primary">
-              <i class="bi bi-list-ul me-1"></i>Xem danh sách
-            </a>
-          </div>
-        </form>
-      </div>
+    <div class="mb-3">
+      <label class="form-label">Số lượng:</label>
+      <input type="number" class="form-control" th:field="*{quantity}" required />
     </div>
-  </main>
+
+    <div class="mb-3">
+      <label class="form-label">Loại giao dịch:</label>
+      <select class="form-select" th:field="*{type}">
+        <option value="IN">Nhập</option>
+        <option value="OUT">Xuất</option>
+      </select>
+    </div>
+
+    <button type="submit" class="btn btn-success">Lưu</button>
+    <a th:href="@{/inventory}" class="btn btn-secondary">Hủy</a>
+  </form>
 </div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-  // Auto hide alerts after 5 seconds
-  document.addEventListener('DOMContentLoaded', function() {
-    const alerts = document.querySelectorAll('.alert:not(.alert-permanent)');
-    alerts.forEach(function(alert) {
-      setTimeout(function() {
-        const bsAlert = new bootstrap.Alert(alert);
-        bsAlert.close();
-      }, 5000);
-    });
-  });
-
-  // Add loading state to buttons
-  document.addEventListener('DOMContentLoaded', function() {
-    const forms = document.querySelectorAll('form');
-    forms.forEach(function(form) {
-      form.addEventListener('submit', function() {
-        const submitBtn = form.querySelector('button[type="submit"]');
-        if (submitBtn) {
-          submitBtn.disabled = true;
-          submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status"></span>Đang lưu...';
-        }
-      });
-    });
-  });
-
-  // Set current datetime if field is empty
-  document.addEventListener('DOMContentLoaded', function() {
-    const timestampField = document.querySelector('input[type="datetime-local"]');
-    if (timestampField && !timestampField.value) {
-      const now = new Date();
-      now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
-      timestampField.value = now.toISOString().slice(0, 16);
-    }
-  });
-</script>
-
 </body>
 </html>

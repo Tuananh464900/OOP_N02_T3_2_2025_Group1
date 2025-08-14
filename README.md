@@ -55,7 +55,6 @@ Maven hoặc IDE hỗ trợ (IntelliJ, Visual Studio Code…)
 
 git clone https://github.com/Tuananh464900/OOP_N02_T3_2_2025_Group1
 
-🗂️ Cấu trúc thư mục
 
 ### 📁 Cấu trúc thư mục
 
@@ -251,6 +250,54 @@ Kết nối cơ sở dữ liệu
 <img width="1057" height="1064" alt="activity diagram (3)" src="https://github.com/user-attachments/assets/35e6d287-6eeb-4187-ab6c-92909b1ea0b8" />   
 
 
+## 📚 Mô tả đối tượng
+
+### 1. Product
+**Thuộc tính:**
+- `productID`: Mã sản phẩm
+- `productName`: Tên sản phẩm
+- `quantity`: Số lượng
+- `price`: Giá bán
+- `category`: Loại sản phẩm
+- `unit`: Đơn vị tính
+- `importPrice`: Giá nhập
+- `exportPrice`: Giá xuất
+
+**Hành vi:**
+- `createProduct(Product)`: Thêm sản phẩm mới
+- `updateProduct(Product)`: Cập nhật thông tin sản phẩm
+- `deleteProduct(productID)`: Xóa sản phẩm
+- `displayProduct()`: Hiển thị thông tin sản phẩm
+
+---
+
+### 2. Warehouse
+**Thuộc tính:**
+- `warehouseID`: Mã kho
+- `warehouseName`: Tên kho
+- `address`: Địa chỉ
+
+**Hành vi:**
+- `createWarehouse(Warehouse)`: Thêm kho mới
+- `updateWarehouse(Warehouse)`: Cập nhật thông tin kho
+- `deleteWarehouse(warehouseID)`: Xóa kho
+- `displayWarehouse()`: Hiển thị thông tin kho
+
+---
+
+### 3. InventoryTransaction
+**Thuộc tính:**
+- `transactionID`: Mã giao dịch
+- `productID`: Mã sản phẩm
+- `warehouseID`: Mã kho
+- `quantity`: Số lượng
+- `transactionDate`: Ngày giao dịch
+- `transactionType`: Loại giao dịch (*Import* / *Export*)
+
+**Hành vi:**
+- `createTransaction(InventoryTransaction)`: Tạo giao dịch mới
+- `displayTransaction()`: Hiển thị thông tin giao dịch
+- `isStockAvailable(productID, quantity)`: Kiểm tra tồn kho
 
 
 

@@ -107,12 +107,101 @@ QLKH/
 
 
 📚 Mô tả đối tượng
+1) 📦 Product (Sản phẩm)
 
-Product: Đại diện cho hàng hóa trong kho
+Thuộc tính gợi ý
 
-Warehouse: Kho hàng
+id (Long) – khóa chính
 
-InventoryTransaction: Ghi nhận nhập hoặc xuất hàng
+code (String) – mã SP duy nhất
+
+name (String) – tên sản phẩm
+
+category (String) – danh mục
+
+unit (String) – đơn vị tính (cái, hộp, kg…)
+
+costPrice (BigDecimal) – giá nhập
+
+sellPrice (BigDecimal) – giá bán đề xuất
+
+status (Enum: ACTIVE/INACTIVE) – trạng thái kinh doanh
+
+createdAt, updatedAt (Timestamp)
+
+Chức năng
+
+Đăng ký / tạo mới sản phẩm (validate code duy nhất)
+
+Hiển thị danh sách + phân trang, sắp xếp, lọc theo danh mục/trạng thái
+
+Chỉnh sửa thông tin sản phẩm
+
+Xóa (soft delete hoặc đổi status)
+
+Tìm kiếm theo mã, tên, danh mục
+
+(Tuỳ chọn) Báo cáo tồn theo từng kho
+
+2) 🏬 Warehouse (Kho)
+
+Thuộc tính gợi ý
+
+id (Long) – khóa chính
+
+code (String) – mã kho duy nhất
+
+name (String) – tên kho
+
+address (String) – địa chỉ
+
+manager (String) – người phụ trách
+
+phone (String) – liên hệ
+
+status (Enum: ACTIVE/INACTIVE)
+
+createdAt, updatedAt (Timestamp)
+
+Chức năng
+
+Tạo mới kho (validate code duy nhất)
+
+Hiển thị danh sách kho
+
+Chỉnh sửa thông tin kho
+
+Xóa kho (chỉ khi không còn tồn hoặc khóa nghiệp vụ)
+
+Tìm kiếm kho theo mã, tên, địa chỉ
+
+Xem tồn kho tổng quan theo từng kho
+
+3) 🔄 InventoryTransaction (Giao dịch nhập/xuất)
+
+Thuộc tính gợi ý
+
+id (Long) – khóa chính
+
+product (FK → Product) – sản phẩm
+
+warehouse (FK → Warehouse) – kho
+
+type (Enum: IN, OUT) – loại giao dịch
+
+quantity (BigDecimal/Integer) – số lượng
+
+unitPrice (BigDecimal) – đơn giá (dùng cho nhập hoặc xuất)
+
+totalAmount (BigDecimal) – thành tiền (tự tính = quantity * unitPrice)
+
+transDate (LocalDateTime) – ngày giao dịch
+
+note (String) – ghi chú
+
+createdBy (String) – người lập
+
+status (Enum: COMPLETED, CANCELLED)
 
 📖 Ví dụ
 

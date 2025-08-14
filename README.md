@@ -235,6 +235,14 @@ Product product1 = new Product("P001", "Laptop", "Electronics", "Cai", 10, 15000
 Thêm giao diện GUI
 
 Kết nối cơ sở dữ liệu
+## Sơ đồ hoạt động & Class Diagram
+
+![Activity Diagram Xóa Sản Phẩm](images/Screenshot_2025-08-14_104851.png)
+![Activity Diagram Nhập Sản Phẩm](images/Screenshot_2025-08-14_104857.png)
+![Activity Diagram Tìm Kiếm Sản Phẩm](images/Screenshot_2025-08-14_104903.png)
+![Class Diagram](images/Screenshot_2025-08-14_104909.png)
+![Activity Diagram Tổng Quan](images/Screenshot_2025-08-14_105011.png)
+
 
 
 

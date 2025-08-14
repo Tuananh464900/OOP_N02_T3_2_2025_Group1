@@ -1,24 +1,24 @@
 # Ứng dụng: Xây dựng quản lý kho hàng
 
+## 📋 Mục lục
 
-📋 Mục lục
+- [Giới thiệu](#giới-thiệu)
+- [Thành viên](#thành-viên)
+- [Phân tích đối tượng](#phân-tích-đối-tượng)
+- [Cấu trúc thư mục](#cấu-trúc-thư-mục)
+- [Cấu trúc lớp và phân lớp](#cấu-trúc-lớp-và-phân-lớp)
+- [Kiểm thử chức năng](#kiểm-thử-chức-năng)
+- [Các chức năng chính](#các-chức-năng-chính)
+- [Class Diagram](#class-diagram)
+- [Activity Diagram](#activity-diagram)
+- [Mô tả đối tượng](#mô-tả-đối-tượng)
+- [Giao diện chương trình](#giao-diện-chương-trình)
+- [Chức năng nổi bật](#chức-năng-nổi-bật)
+- [Công nghệ sử dụng](#công-nghệ-sử-dụng)
+- [Hướng phát triển](#hướng-phát-triển)
+- [Cài đặt & Chạy](#cài-đặt--chạy)
+- [Tài liệu tham khảo](#tài-liệu-tham-khảo)
 
-[Giới thiệu]
-[Thành viên]
-[Phân tích đối tượng]
-[cấu trúc thư mục]
-[cấu trúc lớp và phân lớp]
-[kiểm thử chức năng]
-[Các chức năng chính]
-[Class Diagram]
-[Activity Diagram]
-[Mô tả đối tượng]
-[Giao diện chương trình]
-[Chức năng nổi bật]
-[Công nghệ sử dụng]
-[Hướng phát triển]
-[Cài đặt--Chạy]
-[Tài liệu tham khảo]
 ✨ Giới thiệu
 
 Đây là ứng dụng Quản lý Kho Hàng được xây dựng theo hướng lập trình hướng đối tượng (OOP), cho phép:

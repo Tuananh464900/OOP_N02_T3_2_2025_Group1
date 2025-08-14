@@ -56,8 +56,79 @@ Maven hoặc IDE hỗ trợ (IntelliJ, Visual Studio Code…)
 git clone https://github.com/Tuananh464900/OOP_N02_T3_2_2025_Group1
 
 🗂️ Cấu trúc thư mục
-
-OOP_N02_T3_2_2025_Group1/ ├── src/ │ ├── Product.java │ ├── Warehouse.java │ ├── InventoryTransaction.java ├── Main.java
+QLKH/
+│── .mvn/
+│   └── wrapper/
+│       └── maven-wrapper.properties
+│
+│── src/
+│   ├── main/
+│   │   ├── java/com/example/demo/
+│   │   │   ├── controller/
+│   │   │   │   ├── CustomErrorController.java
+│   │   │   │   ├── DashboardController.java
+│   │   │   │   ├── HomeController.java
+│   │   │   │   ├── InventoryCoreController.java
+│   │   │   │   ├── InventoryTransactionController.java
+│   │   │   │   ├── InventoryTransactionViewController.java
+│   │   │   │   ├── ProductController.java
+│   │   │   │   ├── ProductViewController.java
+│   │   │   │   ├── WarehouseController.java
+│   │   │   │   └── WarehouseViewController.java
+│   │   │   ├── dto/
+│   │   │   │   └── StockRequest.java
+│   │   │   ├── exception/
+│   │   │   │   ├── BusinessException.java
+│   │   │   │   ├── GlobalExceptionHandler.java
+│   │   │   │   └── ResourceNotFoundException.java
+│   │   │   ├── model/
+│   │   │   │   ├── InventoryTransaction.java
+│   │   │   │   ├── Product.java
+│   │   │   │   └── Warehouse.java
+│   │   │   ├── repository/
+│   │   │   │   ├── InventoryTransactionRepository.java
+│   │   │   │   ├── ProductRepository.java
+│   │   │   │   └── WarehouseRepository.java
+│   │   │   ├── service/
+│   │   │   │   ├── InventoryCoreService.java
+│   │   │   │   ├── InventoryCoreServiceImpl.java
+│   │   │   │   ├── InventoryTransactionService.java
+│   │   │   │   ├── InventoryTransactionServiceImpl.java
+│   │   │   │   ├── ProductService.java
+│   │   │   │   ├── ProductServiceImpl.java
+│   │   │   │   ├── WarehouseService.java
+│   │   │   │   └── WarehouseServiceImpl.java
+│   │   │   └── DemoApplication.java
+│   │   ├── resources/
+│   │   │   ├── static/
+│   │   │   │   ├── css/app.css
+│   │   │   │   └── js/app.js
+│   │   │   ├── templates/
+│   │   │   │   ├── dashboard.html
+│   │   │   │   ├── error.html
+│   │   │   │   ├── index.html
+│   │   │   │   ├── inventory-form.html
+│   │   │   │   ├── inventory-list.html
+│   │   │   │   ├── layout.html
+│   │   │   │   ├── product-form.html
+│   │   │   │   ├── product-list.html
+│   │   │   │   ├── transaction-form.html
+│   │   │   │   ├── transaction-list.html
+│   │   │   │   ├── warehouse-form.html
+│   │   │   │   └── warehouse-list.html
+│   │   │   ├── application.properties
+│   │   │   └── application-cloud.yml
+│
+│   ├── test/
+│   │   ├── java/com/example/demo/
+│   │   │   ├── DemoApplicationTests.java
+│   │   │   └── service/InventoryCoreServiceTests.java
+│   │   └── resources/application.properties
+│
+│── test/
+│   └── ProductServiceTest.java
+│
+└── README.md
 
 📚 Mô tả đối tượng
 

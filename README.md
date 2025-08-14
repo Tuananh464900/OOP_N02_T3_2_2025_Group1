@@ -303,7 +303,41 @@ Kết nối cơ sở dữ liệu
 <img width="2559" height="1038" alt="image" src="https://github.com/user-attachments/assets/c28d4f67-e93d-4419-838b-6b89ff2c346f" />
 
 
+## 🌟 Chức năng nổi bật
+- CRUD đầy đủ cho **Product**, **Warehouse**, **InventoryTransaction**
+- **Nhập/Xuất kho**: tự động cập nhật tồn kho theo giao dịch
+- **Tìm kiếm/Lọc** theo mã, tên, danh mục; sắp xếp & phân trang
+- **Dashboard**: tổng quan số liệu, giao dịch gần đây
+- **Xử lý lỗi** tập trung (GlobalExceptionHandler), thông báo rõ ràng trên giao diện
+- **Kiểm thử**: unit test tối thiểu cho service cốt lõi
 
+## 💡 Công nghệ sử dụng
+- **Ngôn ngữ**: Java 17
+- **Framework**: Spring Boot 3 (Web, Data JPA, Validation)
+- **Kiến trúc**: MVC (Controller – Service – Repository – Entity – View)
+- **View**: Thymeleaf, Bootstrap
+- **CSDL**: MySQL (local) / **Cloud MySQL** (profile `prod`)
+- **Build & Dependency**: Maven
+- **Khác**: Lombok, HikariCP
+- **Tài liệu**: Class Diagram & Activity Diagram (đính kèm trong `images/`)
+
+## 🚀 Hướng phát triển
+- **Bảo mật**: Đăng nhập/đăng xuất, phân quyền (Admin/Staff) với Spring Security
+- **Danh mục (Category)**: module quản lý riêng, liên kết Product–Category
+- **Báo cáo/Thống kê**: biểu đồ doanh thu/thống kê theo tháng (Chart.js)
+- **Triển khai**: Demo chạy công khai (Render/Railway) dùng **Cloud MySQL**
+- **API**: Mở rộng RESTful API cho tích hợp hệ thống khác
+- **Kiểm thử**: tăng coverage (service/repository), UI test cơ bản
+
+##⚙️ Cài đặt & Chạy
+git clone :https://github.com/Tuananh464900/OOP_N02_T3_2_2025_Group1
+Mở project bằng IDE 
+
+
+##📚 Tài liệu tham khảo
+Slide bài giảng môn Lập trình Hướng Đối Tượng – GVHD: TS.Nguyễn Lệ Thu
+Java Docs – Oracle
+Stack Overflow – Community
 
 
 

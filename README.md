@@ -214,7 +214,7 @@ QLKH/
 <img width="1628" height="871" alt="Class diagram" src="https://github.com/user-attachments/assets/8447c2c0-691f-4b3f-bc95-def714d5efdf" />
 2.📊 Đăng nhập (Activity Diagram)
 <img width="664" height="1157" alt="activity diagram (5)" src="https://github.com/user-attachments/assets/230ea7d3-0a42-451f-a8bf-09a01ede697a" />
-    3.📊 Tìm sản phẩm (Activity Diagram)
+                   3.📊 Tìm sản phẩm (Activity Diagram)
 <img width="1100" height="1012" alt="activity diagram (2)" src="https://github.com/user-attachments/assets/206cae78-b50e-4d2b-ab92-bcfa3f25dc66" />
 4.📊 Xóa sản phẩm (Activity Diagram)
 <img width="1270" height="1082" alt="activity diagram (1)" src="https://github.com/user-attachments/assets/f1d3d45d-54d5-492d-be22-41d3097083f1" /> 

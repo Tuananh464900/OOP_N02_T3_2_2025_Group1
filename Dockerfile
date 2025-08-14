@@ -1,4 +1,3 @@
-@'
 # ---------- Build stage ----------
 FROM maven:3.9.6-eclipse-temurin-17 AS build
 WORKDIR /workspace
@@ -12,11 +11,7 @@ FROM eclipse-temurin:17-jre
 WORKDIR /app
 COPY --from=build /workspace/target/*.jar app.jar
 
-# Giới hạn RAM cho gói Free
 ENV JAVA_OPTS="-Xmx512m"
-# Profile mặc định
 ENV SPRING_PROFILES_ACTIVE=prod
 
-# Render cung cấp biến PORT -> truyền vào Spring Boot
 CMD ["sh","-c","java $JAVA_OPTS -jar app.jar --server.port=$PORT --spring.profiles.active=${SPRING_PROFILES_ACTIVE}"]
-'@ | Set-Content -NoNewline -Path Dockerfile

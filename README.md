@@ -237,13 +237,7 @@ Thêm giao diện GUI
 Kết nối cơ sở dữ liệu
 ## Sơ đồ hoạt động & Class Diagram
 
-![Activity Diagram Xóa Sản Phẩm](images/Screenshot_2025-08-14_104851.png)
-![Activity Diagram Nhập Sản Phẩm](images/Screenshot_2025-08-14_104857.png)
-![Activity Diagram Tìm Kiếm Sản Phẩm](images/Screenshot_2025-08-14_104903.png)
-![Class Diagram](images/Screenshot_2025-08-14_104909.png)
-![Activity Diagram Tổng Quan](images/Screenshot_2025-08-14_105011.png)
-
-
+<img width="1628" height="871" alt="Class diagram" src="https://github.com/user-attachments/assets/6fd36c4f-2bb0-40a5-9f1a-b8d05458b427" />
 
 
 

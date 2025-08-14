@@ -3,38 +3,35 @@
 
 📋 Mục lục
 
-Giới thiệu
-
-Thành viên
-
-Ứng dụng
-
-Yêu cầu
-
-Cài đặt--Chạy
-
-Cấu trúc thư mục
-
-Mô tả đối tượng
-
-Ví dụ
-
-Hướng phát triển
-
-
+[Giới thiệu]
+[Thành viên]
+[Phân tích đối tượng]
+[cấu trúc thư mục]
+[cấu trúc lớp và phân lớp]
+[kiểm thử chức năng]
+[Các chức năng chính]
+[Class Diagram]
+[Activity Diagram]
+[Mô tả đối tượng]
+[Giao diện chương trình]
+[Chức năng nổi bật]
+[Công nghệ sử dụng]
+[Hướng phát triển]
+[Cài đặt--Chạy]
+[Tài liệu tham khảo]
 ✨ Giới thiệu
 
 Đây là ứng dụng Quản lý Kho Hàng được xây dựng theo hướng lập trình hướng đối tượng (OOP), cho phép:
 
 Quản lý sản phẩm (Product)
-
 Quản lý nhà kho: Kho hàng (Warehouse)
-
 Giao dịch nhập/xuất (InventoryTransaction)
 
 👥 Thành viên
-
-Hồ Tuấn Anh (24100464) – Tuananh464900
+Họ tên	MSSV	GitHub
+Hồ Tuấn Anh 24100464 @Tuananh464900
+Phùng Quốc Bình 24100241 
+Nguyễn Lệ Thu		@nglthu
 
 🌐 Ứng dụng
 

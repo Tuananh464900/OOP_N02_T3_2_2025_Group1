@@ -305,15 +305,21 @@ QLKH/
 - **API**: Mở rộng RESTful API cho tích hợp hệ thống khác
 - **Kiểm thử**: tăng coverage (service/repository), UI test cơ bản
 
-##⚙️ Cài đặt & Chạy
-git clone :https://github.com/Tuananh464900/OOP_N02_T3_2_2025_Group1
-Mở project bằng IDE 
+## ⚙️ Cài đặt & Chạy
 
+git clone https://github.com/Tuananh464900/OOP_N02_T3_2_2025_Group1  
+cd OOP_N02_T3_2_2025_Group1  
 
-##📚 Tài liệu tham khảo
-Slide bài giảng môn Lập trình Hướng Đối Tượng – GVHD: TS.Nguyễn Lệ Thu
-Java Docs – Oracle
-Stack Overflow – Community
+Mở project bằng IDE (IntelliJ, Eclipse, VS Code) hoặc chạy bằng console:
+
+javac src/*.java  
+java Main  
+
+## 📚 Tài liệu tham khảo
+
+- Slide bài giảng môn Lập trình Hướng Đối Tượng – GVHD: TS. Nguyễn Lệ Thu  
+- Java Docs – Oracle  
+- Stack Overflow – Community
 
 
 

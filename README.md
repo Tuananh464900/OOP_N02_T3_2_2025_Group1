@@ -27,11 +27,13 @@ Quản lý sản phẩm (Product)
 Quản lý nhà kho: Kho hàng (Warehouse)
 Giao dịch nhập/xuất (InventoryTransaction)
 
-👥 Thành viên
-Họ tên	MSSV	GitHub
-Hồ Tuấn Anh 24100464 @Tuananh464900
-Phùng Quốc Bình 24100241 
-Nguyễn Lệ Thu		@nglthu
+## 👥 Thành viên nhóm
+
+| STT | Họ tên               | Mã SV    | GitHub |
+| --- | -------------------- | ---------| ------- |
+| 1   | Hồ Tuấn Anh          | 24100464 | [Tuananh464900](https://github.com/Tuananh464900) |
+| 2   | Phùng Quốc Bình      | 24100241 |         |
+| 3   | Nguyễn Lệ Thu        |          | [nglthu](https://github.com/nglthu) |
 
 🌐 Ứng dụng
 

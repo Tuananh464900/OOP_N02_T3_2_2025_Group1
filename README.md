@@ -85,8 +85,7 @@ QLKH/  # Spring Boot Project
 │  │  │  │  ├─ product-list.html
 │  │  │  │  ├─ warehouse-list.html
 │  │  │  │  └─ ...
-│  │  │  ├─ application.properties             # Cấu hình ứng dụng
-│  │  │  └─ application-cloud.yml
+│  │  │  └─  application.properties             # Cấu hình ứng dụng
 │  ├─ test/java/com/example/demo/              # Unit tests
 │  │  ├─ DemoApplicationTests.java
 │  │  └─ service/InventoryCoreServiceTests.java

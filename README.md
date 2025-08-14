@@ -56,37 +56,37 @@ Maven hoặc IDE hỗ trợ (IntelliJ, Visual Studio Code…)
 git clone https://github.com/Tuananh464900/OOP_N02_T3_2_2025_Group1
 
 🗂️ Cấu trúc thư mục
-├── QLKH/                               # Spring Boot Project
-│   ├── src/
-│   │   ├── main/
-│   │   │   ├── java/com/example/demo/
-│   │   │   │   ├── controller/                       # Các Controller xử lý request
-│   │   │   │   ├── dto/                              # Data Transfer Object
-│   │   │   │   ├── exception/                        # Xử lý ngoại lệ
-│   │   │   │   ├── model/                            # Các class mô hình dữ liệu
-│   │   │   │   │   ├── InventoryTransaction.java
-│   │   │   │   │   ├── Product.java
-│   │   │   │   │   └── Warehouse.java
-│   │   │   │   ├── repository/                       # Tầng kết nối và truy vấn DB
-│   │   │   │   ├── service/                          # Các service xử lý logic
-│   │   │   │   └── DemoApplication.java              # Main() chạy ứng dụng
-│   │   │   ├── resources/
-│   │   │   │   ├── static/                           # CSS, JS
-│   │   │   │   │   ├── css/app.css
-│   │   │   │   │   └── js/app.js
-│   │   │   │   ├── templates/                        # Giao diện HTML
-│   │   │   │   │   ├── dashboard.html
-│   │   │   │   │   ├── product-list.html
-│   │   │   │   │   ├── warehouse-list.html
-│   │   │   │   │   └── ...
-│   │   │   │   ├── application.properties            # Cấu hình ứng dụng
-│   │   │   │   └── application-cloud.yml
-│   │   ├── test/java/com/example/demo/               # Test Unit
-│   │   │   ├── DemoApplicationTests.java
-│   │   │   └── service/InventoryCoreServiceTests.java
-│   │   └── resources/application.properties          # Cấu hình test
-│   ├── pom.xml                                       # File cấu hình Maven
-│   └── README.md                                     # Tài liệu mô tả dự án
+QLKH/  # Spring Boot Project
+├─ src/
+│  ├─ main/
+│  │  ├─ java/com/example/demo/
+│  │  │  ├─ controller/                        # Các Controller xử lý request
+│  │  │  ├─ dto/                               # Data Transfer Object
+│  │  │  ├─ exception/                         # Xử lý ngoại lệ
+│  │  │  ├─ model/                             # Class mô hình dữ liệu
+│  │  │  │  ├─ InventoryTransaction.java
+│  │  │  │  ├─ Product.java
+│  │  │  │  └─ Warehouse.java
+│  │  │  ├─ repository/                        # Truy vấn DB (JPA Repository)
+│  │  │  ├─ service/                           # Business logic
+│  │  │  └─ DemoApplication.java               # Main()
+│  │  ├─ resources/
+│  │  │  ├─ static/                            # CSS, JS
+│  │  │  │  ├─ css/app.css
+│  │  │  │  └─ js/app.js
+│  │  │  ├─ templates/                         # Thymeleaf HTML
+│  │  │  │  ├─ dashboard.html
+│  │  │  │  ├─ product-list.html
+│  │  │  │  ├─ warehouse-list.html
+│  │  │  │  └─ ...
+│  │  │  ├─ application.properties             # Cấu hình ứng dụng
+│  │  │  └─ application-cloud.yml
+│  ├─ test/java/com/example/demo/              # Unit tests
+│  │  ├─ DemoApplicationTests.java
+│  │  └─ service/InventoryCoreServiceTests.java
+│  └─ resources/application.properties         # Cấu hình test
+├─ pom.xml                                     # Maven config
+└─ README.md                                   # Tài liệu mô tả dự án
 
 
 📚 Mô tả đối tượng

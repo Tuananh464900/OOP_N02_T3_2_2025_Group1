@@ -50,8 +50,7 @@
 - `unit` (String) – đơn vị tính (cái, hộp, kg…)
 - `costPrice` (BigDecimal) – giá nhập
 - `sellPrice` (BigDecimal) – giá bán đề xuất
-- `status` (Enum: ACTIVE / INACTIVE) – trạng thái kinh doanh
-- `createdAt`, `updatedAt` (Timestamp)
+
 
 **Chức năng**
 - Đăng ký / tạo mới sản phẩm (validate `code` duy nhất)

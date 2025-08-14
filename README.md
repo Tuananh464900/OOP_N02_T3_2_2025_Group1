@@ -237,7 +237,24 @@ Thêm giao diện GUI
 Kết nối cơ sở dữ liệu
 ## Sơ đồ hoạt động & Class Diagram
 
-<img width="1628" height="871" alt="Class diagram" src="https://github.com/user-attachments/assets/6fd36c4f-2bb0-40a5-9f1a-b8d05458b427" />
+
+
+<img width="1628" height="871" alt="Class diagram" src="https://github.com/user-attachments/assets/8447c2c0-691f-4b3f-bc95-def714d5efdf" />
+
+
+<img width="1100" height="1012" alt="activity diagram (2)" src="https://github.com/user-attachments/assets/206cae78-b50e-4d2b-ab92-bcfa3f25dc66" />
+
+<img width="1270" height="1082" alt="activity diagram (1)" src="https://github.com/user-attachments/assets/f1d3d45d-54d5-492d-be22-41d3097083f1" /> 
+
+
+<img width="1057" height="1064" alt="activity diagram (3)" src="https://github.com/user-attachments/assets/35e6d287-6eeb-4187-ab6c-92909b1ea0b8" />   
+
+<img width="664" height="1157" alt="activity diagram (5)" src="https://github.com/user-attachments/assets/230ea7d3-0a42-451f-a8bf-09a01ede697a" />
+
+
+
+
+
 
 
 

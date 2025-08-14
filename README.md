@@ -206,15 +206,7 @@ QLKH/
 - Sử dụng **Entity, Repository, Service** để quản lý dữ liệu trong bộ nhớ và đồng bộ với DB
 - Hỗ trợ **truy vấn phân trang, sắp xếp** và lọc dữ liệu
 
-📖 Ví dụ
 
-Product product1 = new Product("P001", "Laptop", "Electronics", "Cai", 10, 15000, 18000);
-
-✨ Hướng phát triển
-
-Thêm giao diện GUI
-
-Kết nối cơ sở dữ liệu
 ## Sơ đồ hoạt động & Class Diagram
 
 

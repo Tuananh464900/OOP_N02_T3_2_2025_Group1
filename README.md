@@ -36,24 +36,6 @@
 | 2   | Phùng Quốc Bình      | 24100241 |         |
 | 3   | Nguyễn Lệ Thu        |          | [nglthu](https://github.com/nglthu) |
 
-🌐 Ứng dụng
-
-Quản lý sản phẩm
-
-Quản lý Nhà Kho
-
-Giao dịch nhập/xuất kho
-
-
-📆 Yêu cầu
-
-Java 11 hoặc cao hơn
-
-Maven hoặc IDE hỗ trợ (IntelliJ, Visual Studio Code…)
-
-⚙️ Cài đặt & Chạy
-
-git clone https://github.com/Tuananh464900/OOP_N02_T3_2_2025_Group1
 
 
 ### 📁 Cấu trúc thư mục

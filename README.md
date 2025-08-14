@@ -108,7 +108,6 @@
 
 ### 📁 Cấu trúc thư mục
 
-> **Lưu ý:** Dán *nguyên khối* dưới đây vào README. Khối mã (fenced code block) sẽ giữ nguyên khoảng trắng và không làm `#` biến thành heading.
 
 ```text
 QLKH/  # Spring Boot Project

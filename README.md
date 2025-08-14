@@ -17,8 +17,7 @@
 - [Công nghệ sử dụng](#công-nghệ-sử-dụng)
 - [Hướng phát triển](#hướng-phát-triển)
 - [Cài đặt & Chạy](#cài-đặt--chạy)
-- [Tài liệu tham khảo](#tài-liệu-tham-khảo)
-
+- [Tài liệu tham khảo]
 ✨ Giới thiệu
 
 Đây là ứng dụng Quản lý Kho Hàng được xây dựng theo hướng lập trình hướng đối tượng (OOP), cho phép:

@@ -19,13 +19,14 @@
 - [Cài đặt & Chạy]
 - [Tài liệu tham khảo]
   
-✨ Giới thiệu
+## ✨ Giới thiệu
 
-Đây là ứng dụng Quản lý Kho Hàng được xây dựng theo hướng lập trình hướng đối tượng (OOP), cho phép:
+Đây là ứng dụng **Quản lý Kho Hàng** được xây dựng theo hướng **lập trình hướng đối tượng (OOP)**, cho phép:
 
-Quản lý sản phẩm (Product)
-Quản lý nhà kho: Kho hàng (Warehouse)
-Giao dịch nhập/xuất (InventoryTransaction)
+- Quản lý sản phẩm (**Product**)
+- Quản lý nhà kho (**Warehouse**)
+- Quản lý giao dịch nhập/xuất (**InventoryTransaction**)
+
 
 ## 👥 Thành viên nhóm
 

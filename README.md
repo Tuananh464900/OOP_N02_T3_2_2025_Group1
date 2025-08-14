@@ -175,6 +175,56 @@ QLKH/
 - Tra cứu theo nhiều tiêu chí
 - Báo cáo tồn kho, thẻ kho, xuất–nhập–tồn
 
+## 🧱 Cấu trúc lớp và phân lớp
+
+### Các lớp chính
+
+- **Product**: thông tin sản phẩm
+  - Thuộc tính tiêu biểu: `id`, `code`, `name`, `category`, `unit`, `costPrice`, `sellPrice`, `status`, `createdAt`, `updatedAt`
+  - Vai trò: đại diện mặt hàng; dùng trong giao dịch nhập/xuất; hỗ trợ tra cứu & thống kê
+
+- **Warehouse**: thông tin kho
+  - Thuộc tính tiêu biểu: `id`, `code`, `name`, `address`, `manager`, `phone`, `status`, `createdAt`, `updatedAt`
+  - Vai trò: nơi lưu trữ sản phẩm; kết hợp với giao dịch để theo dõi tồn theo từng kho
+
+- **InventoryTransaction**: phiếu nhập/xuất kho
+  - Thuộc tính tiêu biểu: `id`, `product` (FK → Product), `warehouse` (FK → Warehouse), `type` (IN/OUT), `quantity`, `unitPrice`, `totalAmount`, `transDate`, `note`, `createdBy`, `status`
+  - Vai trò: ghi nhận nghiệp vụ nhập/xuất; cập nhật tồn; phục vụ báo cáo xuất–nhập–tồn
+
+- **DemoApplication (Main)**: lớp chạy chính của ứng dụng Spring Boot
+  - Vai trò: khởi động ứng dụng, nạp cấu hình & bean, khởi tạo context
+
+ ## ✅ Kiểm thử chức năng
+
+| Lớp | Chức năng kiểm thử chính |
+| --- | ------------------------ |
+| `Product` | Đăng ký, xóa, chỉnh sửa, hiển thị danh sách sản phẩm, tìm kiếm |
+| `Warehouse` | Tạo mới kho, xóa, chỉnh sửa, hiển thị danh sách, tìm kiếm |
+| `InventoryTransaction` | Tạo phiếu nhập/xuất kho, chỉnh sửa/huỷ, hiển thị danh sách, tìm kiếm |
+
+## 🛠️ Chức năng chính
+
+### 📦 Quản lý sản phẩm (Product)
+- Thêm / Sửa / Xóa sản phẩm
+- Hiển thị danh sách sản phẩm
+- Tìm kiếm theo mã, tên, danh mục
+- Cập nhật tồn kho khi nhập/xuất
+
+### 🏬 Quản lý kho (Warehouse)
+- Thêm / Sửa / Xóa kho
+- Hiển thị danh sách kho
+- Tìm kiếm theo mã kho, tên kho, địa chỉ
+
+### 🔄 Quản lý nhập/xuất kho (InventoryTransaction)
+- Tạo phiếu nhập (IN) / xuất (OUT)
+- Cập nhật, chỉnh sửa, huỷ phiếu giao dịch
+- Hiển thị danh sách giao dịch
+- Tìm kiếm theo nhiều tiêu chí (thời gian, sản phẩm, kho, loại giao dịch)
+
+### 💾 Lưu trữ dữ liệu
+- Lưu dữ liệu vào **CSDL MySQL** thông qua Spring Data JPA
+- Sử dụng **Entity, Repository, Service** để quản lý dữ liệu trong bộ nhớ và đồng bộ với DB
+- Hỗ trợ **truy vấn phân trang, sắp xếp** và lọc dữ liệu
 
 📖 Ví dụ
 

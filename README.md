@@ -299,6 +299,9 @@ Kết nối cơ sở dữ liệu
 - `displayTransaction()`: Hiển thị thông tin giao dịch
 - `isStockAvailable(productID, quantity)`: Kiểm tra tồn kho
 
+## Giao diện Chương trình
+<img width="2559" height="1038" alt="image" src="https://github.com/user-attachments/assets/c28d4f67-e93d-4419-838b-6b89ff2c346f" />
+
 
 
 

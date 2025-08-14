@@ -57,31 +57,55 @@ git clone https://github.com/Tuananh464900/OOP_N02_T3_2_2025_Group1
 
 🗂️ Cấu trúc thư mục
 
-├── QuanliGiaoTrinh_springboot/       # Spring Boot
-│   ├── complete/
-│   │   ├── gradle/wrapper
-│   │   ├── src/
-│   │   │   ├── main/
-│   │   │   │   ├──java/com/example/servingwebcontent/
-│   │   │   │   │   ├──Component
-│   │   │   │   │   ├──Controller                                              # Các controller
-│   │   │   │   │   ├──Database                                                # Các service, kết nối, truy vấn cơ sở dữ liệu
-│   │   │   │   │   ├──Model                                                   # Các class mô hình dữ liệu
-│   │   │   │   │      ├──Book.java
-│   │   │   │   │      ├──Reader.java
-│   │   │   │   │      ├──Loan.java
-│   │   │   │   │   ├──test                                                    # File test 
-│   │   │   │   │   ├──ServingWebContentApplication.java                       # Main() để chạy ứng dụng
-│   │   │   │   ├──resources/
-│   │   │   │        ├── static/                                               
-│   │   │   │        ├── templates/                                            # Giao diện
-│   │   │   │        └── application.properties                                # File cấu hình ứng dụng
-│   │   │   ├── test/java/com/example/servingwebcontent/                       # File test ứng dụng
-│   │   ├── target
-│   │   └── ...
-│   └── ...
-├── images
-└── README.md                           # Tài liệu mô tả dự án
+### 📁 Cấu trúc thư mục
+
+> **Lưu ý:** Dán *nguyên khối* dưới đây vào README. Khối mã (fenced code block) sẽ giữ nguyên khoảng trắng và không làm `#` biến thành heading.
+
+```text
+QLKH/  # Spring Boot Project
+├─ src/
+│  ├─ main/
+│  │  ├─ java/com/example/demo/
+│  │  │  ├─ controller/                        # Các Controller xử lý request
+│  │  │  ├─ dto/                               # Data Transfer Object
+│  │  │  ├─ exception/                         # Xử lý ngoại lệ
+│  │  │  ├─ model/                             # Class mô hình dữ liệu
+│  │  │  │  ├─ InventoryTransaction.java
+│  │  │  │  ├─ Product.java
+│  │  │  │  └─ Warehouse.java
+│  │  │  ├─ repository/                        # Truy vấn DB (JPA Repository)
+│  │  │  ├─ service/                           # Business logic
+│  │  │  └─ DemoApplication.java               # Main()
+│  │  ├─ resources/
+│  │  │  ├─ static/                            # CSS, JS
+│  │  │  │  ├─ css/app.css
+│  │  │  │  └─ js/app.js
+│  │  │  ├─ templates/                         # Thymeleaf HTML
+│  │  │  │  ├─ dashboard.html
+│  │  │  │  ├─ product-list.html
+│  │  │  │  ├─ warehouse-list.html
+│  │  │  │  └─ ...
+│  │  │  ├─ application.properties             # Cấu hình ứng dụng
+│  │  │  └─ application-cloud.yml
+│  ├─ test/java/com/example/demo/              # Unit tests
+│  │  ├─ DemoApplicationTests.java
+│  │  └─ service/InventoryCoreServiceTests.java
+│  └─ resources/application.properties         # Cấu hình test
+├─ pom.xml                                     # Maven config
+└─ README.md                                   # Tài liệu mô tả dự án
+```
+
+<details><summary>📂 Bản thu gọn (click để mở)</summary>
+
+```text
+QLKH/
+├─ src/
+│  ├─ main/…
+│  ├─ test/…
+├─ pom.xml
+└─ README.md
+```
+</details>
 
 
 📚 Mô tả đối tượng

@@ -311,8 +311,8 @@ cd OOP_N02_T3_2_2025_Group1
 
 Mở project bằng IDE (IntelliJ, Eclipse, VS Code) hoặc chạy bằng console:
 
--javac src/*.java
--java Main
+- javac src/*.java
+- java Main
 ## 📚 Tài liệu tham khảo
 
 - Slide bài giảng môn Lập trình Hướng Đối Tượng – GVHD: TS. Nguyễn Lệ Thu  
